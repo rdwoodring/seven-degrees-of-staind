@@ -8,7 +8,7 @@ var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
-var redirect_uri = 'http://localhost:3000/login/callback'; // Your redirect uri
+var redirect_uri = '/login/callback'; // Your redirect uri
 
 var staindId = '5KDIH2gF0VpelTqyQS7udb';
 
@@ -72,12 +72,14 @@ router.get('/', function(req, res) {
 
   var scope = '';
 
+  // debugger;
+
   res.redirect('https://accounts.spotify.com/authorize?' + 
     querystring.stringify({
         response_type: 'code',
         client_id: process.env.CLIENT_ID,
         scope: scope,
-        redirect_uri: redirect_uri,
+        redirect_uri: req.protocol + '://' + req.get('host') + redirect_uri,
         state: state
     }));
 });
