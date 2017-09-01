@@ -7574,16 +7574,26 @@ router.get('/v1/search', function(req, res) {
             // res. = error;
         }
         else {
-            // res.json(body);
-            _.forEach(body.artists.items, function(artist) {
-                if (related[artist.id]) {
-                    artist.isbuttrock = true;
-                }
-                else {
-                    artist.isbuttrock = false;
-                }
-            });
-
+            
+            if (body.artists && body.artists.items) {
+                _.forEach(body.artists.items, function(artist) {
+                    if (related[artist.id]) {
+                        artist.isbuttrock = true;
+                    }
+                    else {
+                        artist.isbuttrock = false;
+                    }
+                });
+            }
+            else {
+                // fudge... bad request maybe
+                body = {
+                    artists: {
+                        items: []
+                    }
+                };
+            }
+            
             res.json(body);
         }
     });
