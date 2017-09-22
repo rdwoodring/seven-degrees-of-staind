@@ -7560,9 +7560,7 @@ router.use('/*', function(req, res, next) {
     next();
 });
 
-router.get('/v1/search', function(req, res) {
-    // debugger;
-    console.log(req.query);
+router.get('/v1/search', function(req, res, next) {
     var options = {
         url: 'https://api.spotify.com/v1/search?q=' + req.query.artist + '&type=artist&market=US&limit=10',
         headers: {'Authorization': 'Bearer ' + req.cookies.accessToken},
@@ -7571,11 +7569,13 @@ router.get('/v1/search', function(req, res) {
 
     request.get(options, function(error, response, body) {
         if (error) {
-            // res. = error;
+            var err = new Error('Bad Request');
+            err.status = 400;
+            next(err);
         }
         else {
             
-            if (body.artists && body.artists.items) {
+            if (body && body.artists && body.artists.items) {
                 _.forEach(body.artists.items, function(artist) {
                     if (related[artist.id]) {
                         artist.isbuttrock = true;
