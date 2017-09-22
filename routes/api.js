@@ -7542,10 +7542,19 @@ var related = {
 }
 
 router.use('/*', function(req, res, next) {
-    var accessTokenExpiry = req.cookies.accessTokenExpiry ? parseInt(req.cookies.accessTokenExpiry) : void(0);
+    var accessTokenExpiry = req.cookies.accessTokenExpiry ? parseInt(req.cookies.accessTokenExpiry) : void(0),
+        accessToken = req.cookies.accessToken,
+        refreshToken = req.cookies.refreshToken,
+        err;
 
-    // debugger;
-    if (accessTokenExpiry < Date.now()) {
+    if (!accessToken) {
+        err = new Error('Access Denied');
+        err.status = 403;
+    }
+    // if (accessToken && accessTokenExpiry  > Date.now()) {
+    //     // all good, access token is present and not expired
+    // }
+    else if (accessTokenExpiry < Date.now()) {
         // refresh token
         // request.get({
         //     url: 'http://localhost:3000/login/refresh_token',
@@ -7553,11 +7562,16 @@ router.use('/*', function(req, res, next) {
         //     debugger;
         // })
     }
-    else {
-        // all good, access token is present and not expired
-    }
+    // else {
+    //     // all good, access token is present and not expired
+    // }
 
-    next();
+    if (err) {
+        next(err);
+    }
+    else {
+        next();
+    }
 });
 
 router.get('/v1/search', function(req, res, next) {
