@@ -3,12 +3,15 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    // console.log(req);
-    // console.log(req.cookies);
-
-    // res.cookie('greeting', 'hi there!', {maxAge: 900000, httpOnly: true});
-
-  res.render('index', { title: 'Express' });
+    res.send(`
+        <html>
+            <head></head>
+            
+            <body>
+            TODO: serve up some UI here
+            </body>
+        </html>
+    `);
 });
 
 module.exports = router;
