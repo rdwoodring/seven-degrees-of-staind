@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../server/dist/app');
 var debug = require('debug')('seven-degrees-of-staind:server');
 var http = require('http');
 
