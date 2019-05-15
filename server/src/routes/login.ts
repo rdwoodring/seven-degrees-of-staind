@@ -1,24 +1,32 @@
-var express = require('express');
-var router = express.Router();
+import {
+  Router,
+  Request,
+  Response,
+  NextFunction
+} from 'express';
 
-var fs = require('fs');
-var _ = require('lodash');
+import * as fs from 'fs';
+import * as request from 'request';
+import * as querystring from 'querystring';
 
-var request = require('request'); // "Request" library
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
+const router: Router = Router();
 
-var redirect_uri = '/login/callback'; // Your redirect uri
+// var fs = require('fs');
 
-var staindId = '5KDIH2gF0VpelTqyQS7udb';
+// var request = require('request'); // "Request" library
+// var querystring = require('querystring');
 
-var stateKey = 'spotify_auth_state';
+var redirect_uri: string = '/login/callback'; // Your redirect uri
 
-var relatedArtists = {};
+var staindId: string = '5KDIH2gF0VpelTqyQS7udb';
 
-var app = express();
+var stateKey: string = 'spotify_auth_state';
 
-var generateRandomString = function(length) {
+var relatedArtists: any = {};
+
+// var app = express();
+
+var generateRandomString = function(length: number) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -28,10 +36,9 @@ var generateRandomString = function(length) {
   return text;
 };
 
-var getRelated = function(pathFromStaind, id, access_token) {
+var getRelated = function(pathFromStaind: string[], id: string, access_token: string) {
     // haven't saved this one yet
     if (!relatedArtists[id]) {
-        // pathFromStaind = _.clone(pathFromStaind);
 
         relatedArtists[id] = pathFromStaind;
 
@@ -45,15 +52,15 @@ var getRelated = function(pathFromStaind, id, access_token) {
             };
 
             // // use the access token to access the Spotify Web API
-            request.get(options, function(error, response, body) {
+            request.get(options, function(error: any, response: any, body: any) {
                 // console.log(body);
                 // console.log()
                 // console.log()
                 // for (var i = 0; i < body.artists.length; i++) {
                 //     getRelated(pathFromStaind.push(id), body.artists[i].id, access_token);
                 // }
-                _.forEach(body.artists, function(artist) {
-                    var path = _.clone(pathFromStaind),
+                body.artists.forEach((artist: any) => {
+                    var path = [...pathFromStaind],
                         artistId = artist.id;
 
                     path.push(artistId);
@@ -66,7 +73,7 @@ var getRelated = function(pathFromStaind, id, access_token) {
 }
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', function (req: Request, res: Response, next: NextFunction) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state)
 
@@ -113,7 +120,7 @@ router.get('/callback', function(req, res) {
       json: true
     };
 
-    request.post(authOptions, function(error, response, body) {
+    request.post(authOptions, function(error: any, response: any, body: any) {
       if (!error && response.statusCode === 200) {
 
         var access_token = body.access_token,
@@ -172,7 +179,7 @@ router.get('/refresh_token', function(req, res) {
   debugger;
   console.log('trying to get refreshed token');
 
-  request.post(authOptions, function(error, response, body) {
+  request.post(authOptions, function(error: any, response: any, body: any) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
 

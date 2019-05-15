@@ -1,11 +1,21 @@
-var express = require('express');
-var router = express.Router();
+// var express = require('express');
+// var router = express.Router();
 
-var request = require('request');
+// var request = require('request');
 
-var _ = require('lodash');
+import {
+    Router,
+    Request,
+    Response,
+    NextFunction
+} from 'express';
 
-var related = {
+// import 
+import * as request from 'request';
+
+const router: Router = Router();
+
+const related: any = {
     "5KDIH2gF0VpelTqyQS7udb": [],
     "1UdQqCUR7RwB9YYJONwbdM": [
         "1UdQqCUR7RwB9YYJONwbdM"
@@ -7541,20 +7551,22 @@ var related = {
     ]
 }
 
-router.use('/*', function(req, res, next) {
-    var accessTokenExpiry = req.cookies.accessTokenExpiry ? parseInt(req.cookies.accessTokenExpiry) : void(0),
-        accessToken = req.cookies.accessToken,
-        refreshToken = req.cookies.refreshToken,
-        err;
+router.use('/*', function(req: Request, res: Response, next: NextFunction) {
+    const accessTokenExpiry: number | undefined = req.cookies.accessTokenExpiry ? parseInt(req.cookies.accessTokenExpiry) : void(0),
+        accessToken: string = req.cookies.accessToken,
+        refreshToken: string = req.cookies.refreshToken;
+
+        let err: Error | undefined;
 
     if (!accessToken) {
         err = new Error('Access Denied');
-        err.status = 403;
+        // err.status = 403;
+        res.status(403)
     }
     // if (accessToken && accessTokenExpiry  > Date.now()) {
     //     // all good, access token is present and not expired
     // }
-    else if (accessTokenExpiry < Date.now()) {
+    else if (accessTokenExpiry && accessTokenExpiry < Date.now()) {
         // refresh token
         // request.get({
         //     url: 'http://localhost:3000/login/refresh_token',
@@ -7574,23 +7586,24 @@ router.use('/*', function(req, res, next) {
     }
 });
 
-router.get('/v1/search', function(req, res, next) {
+router.get('/v1/search', function (req: Request, res: Response, next: NextFunction) {
     var options = {
         url: 'https://api.spotify.com/v1/search?q=' + req.query.artist + '&type=artist&market=US&limit=10',
         headers: {'Authorization': 'Bearer ' + req.cookies.accessToken},
         json: true
     };
 
-    request.get(options, function(error, response, body) {
+    request.get(options, function(error: any, response: any, body: any) {
         if (error) {
             var err = new Error('Bad Request');
-            err.status = 400;
+            res.status(404);
+            
             next(err);
         }
         else {
             
             if (body && body.artists && body.artists.items) {
-                _.forEach(body.artists.items, function(artist) {
+                body.artists.items.forEach((artist: any) => {
                     if (related[artist.id]) {
                         artist.isbuttrock = true;
                     }
@@ -7611,8 +7624,6 @@ router.get('/v1/search', function(req, res, next) {
             res.json(body);
         }
     });
-
-    // debugger;
 });
 
 module.exports = router;
