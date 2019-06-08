@@ -4,7 +4,11 @@
     "private": true,
     "scripts": {
         "start": "node ./bin/www",
-        "build-server-ts": "tsc"
+        "build-server-ts": "tsc",
+        "watch-node": "nodemon dist ./bin/www",
+        "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-client\"",
+        "watch-ts": "tsc -w",
+        "watch-client": "cd client && npm run watch"
     },
     "dependencies": {
         "body-parser": "^1.19.0",
@@ -27,6 +31,8 @@
         "@types/lodash": "^4.14.125",
         "@types/morgan": "^1.7.35",
         "@types/request": "^2.48.1",
+        "concurrently": "^4.1.0",
+        "nodemon": "^1.19.1",
         "typescript": "^3.4.5"
     }
 }
