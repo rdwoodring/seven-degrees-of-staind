@@ -73,7 +73,7 @@ var getRelated = function(pathFromStaind: string[], id: string, access_token: st
 }
 
 /* GET home page. */
-router.get('/', function (req: Request, res: Response, next: NextFunction) {
+router.get('/login', function (req: Request, res: Response, next: NextFunction) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state)
 
@@ -91,7 +91,7 @@ router.get('/', function (req: Request, res: Response, next: NextFunction) {
     }));
 });
 
-router.get('/callback', function(req, res) {
+router.get('/login/callback', function(req, res) {
 
   // your application requests refresh and access tokens
   // after checking the state parameter
@@ -162,7 +162,7 @@ router.get('/callback', function(req, res) {
   }
 });
 
-router.get('/refresh_token', function(req, res) {
+router.get('/login/refresh_token', function(req, res) {
 
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
@@ -192,4 +192,5 @@ router.get('/refresh_token', function(req, res) {
   });
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

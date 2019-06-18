@@ -61,3 +61,7 @@ typings/
 .env
 
 server/dist
+client/dist
+public/static
+public/asset-manifest.json
+public/index.html
