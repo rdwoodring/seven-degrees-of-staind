@@ -22,6 +22,8 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 
+import tokenRefresher from './middleware/token-refreshers/tokenRefresher';
+
 import main from './routes/index';
 import login from './routes/login';
 import api from './routes/api';
@@ -36,12 +38,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../../public')));
+
+app.use(tokenRefresher);
 
 app.use(main);
 app.use(login);
 app.use(api);
 
+app.use(express.static(path.join(__dirname, '../../public')));
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   var err = new Error('Not Found');
