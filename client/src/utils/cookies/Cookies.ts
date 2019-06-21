@@ -9,16 +9,20 @@ class Cookies implements ICookies {
     }
 
     private buildCookiesMap(): ICookiesMap {
-        const cookieString = document.cookie,
+        const cookieString = document.cookie || '',
             cookiesArray = cookieString.split(';');
 
         return cookiesArray.reduce((accumulator, cookie) => {
-            const splitCookie = cookie.split('=');
-
-            return {
-                ...accumulator,
-                [splitCookie[0].trim()]: splitCookie[1].trim()
-            };
+            if (cookie.length) {
+                const splitCookie = cookie.split('=');
+    
+                return {
+                    ...accumulator,
+                    [splitCookie[0].trim()]: splitCookie[1].trim()
+                };
+            } else {
+                return accumulator;
+            }
         }, {});
     }
     
