@@ -41,11 +41,12 @@ app.use(cookieParser());
 
 app.use(tokenRefresher);
 
-app.use(main);
+app.use(express.static(path.join(__dirname, '../../public')));
+
 app.use(login);
 app.use(api);
+app.use(main);
 
-app.use(express.static(path.join(__dirname, '../../public')));
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   var err = new Error('Not Found');
