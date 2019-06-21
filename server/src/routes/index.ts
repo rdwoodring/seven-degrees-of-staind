@@ -24,7 +24,7 @@ const router: Router = Router();
 // 
 // module.exports = router;
 
-router.get('/', function(req: Request, res: Response) {
+router.get('/*', function(req: Request, res: Response) {
     res.sendFile(path.join(__dirname, '../../..', 'public', 'index.html'));
 });
 
