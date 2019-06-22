@@ -2,8 +2,6 @@ import React from 'react';
 
 import IHomePresentationProps from './IHomePresentationProps';
 
-import Navbar from '../../components/navbar/Navbar';
-
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -16,8 +14,6 @@ class HomePresentation extends React.Component<IHomePresentationProps> {
     render() {
         return (
             <>
-                <Navbar/>
-                <br />
                 <div>
                     <Card raised={true}>
                         <CardHeader title={`Nothing "butt" rock!`} />
