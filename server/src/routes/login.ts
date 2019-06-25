@@ -7,7 +7,7 @@ import {
 
 import * as fs from 'fs';
 import * as request from 'request';
-import * as querystring from 'querystring';
+import * as querystring from 'query-string';
 
 const router: Router = Router();
 
@@ -72,7 +72,7 @@ var getRelated = function(pathFromStaind: string[], id: string, access_token: st
     }
 }
 
-/* GET home page. */
+/* GET login page. */
 router.get('/login', function (req: Request, res: Response, next: NextFunction) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state)
@@ -93,71 +93,67 @@ router.get('/login', function (req: Request, res: Response, next: NextFunction) 
 
 router.get('/login/callback', function(req, res) {
 
-  // your application requests refresh and access tokens
-  // after checking the state parameter
+    // your application requests refresh and access tokens
+    // after checking the state parameter
 
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
+    const code = req.query.code || null,
+        state = req.query.state || null,
+        storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  if (state === null || state !== storedState) {
-    res.redirect('/#' +
-      querystring.stringify({
-        error: 'state_mismatch'
-      }));
-  } else {
-    res.clearCookie(stateKey);
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
-        redirect_uri: req.protocol + '://' + req.get('host') + redirect_uri,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64'))
-      },
-      json: true
-    };
+    if (state === null || state !== storedState) {
+        res.redirect('/#' + querystring.stringify({
+                error: 'state_mismatch'
+            }));
+    } else {
+        res.clearCookie(stateKey);
+        var authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            form: {
+                code: code,
+                redirect_uri: req.protocol + '://' + req.get('host') + redirect_uri,
+                grant_type: 'authorization_code'
+            },
+            headers: {
+                'Authorization': 'Basic ' + (new Buffer(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64'))
+            },
+            json: true
+        };
 
     request.post(authOptions, function(error: any, response: any, body: any) {
-      if (!error && response.statusCode === 200) {
+        if (!error && response.statusCode === 200) {
 
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token,
-            expires_in = body.expires_in;
+            const access_token = body.access_token,
+                refresh_token = body.refresh_token,
+                expires_in = body.expires_in;
 
-        // var options = {
-        //   url: 'https://api.spotify.com/v1/artists/' + staindId + '/related-artists',
-        //   headers: { 'Authorization': 'Bearer ' + access_token },
-        //   json: true
-        // };
+            // var options = {
+            //   url: 'https://api.spotify.com/v1/artists/' + staindId + '/related-artists',
+            //   headers: { 'Authorization': 'Bearer ' + access_token },
+            //   json: true
+            // };
 
-        // // // use the access token to access the Spotify Web API
-        // request.get(options, function(error, response, body) {
-        //   console.log(body);
-        // });
+            // // // use the access token to access the Spotify Web API
+            // request.get(options, function(error, response, body) {
+            //   console.log(body);
+            // });
 
-        // getRelated([], staindId, access_token);
-        // console.log(app);
-        
-        res.cookie('accessToken', access_token);
-        res.cookie('refreshToken', refresh_token);
-        res.cookie('accessTokenExpiry', Date.now() + expires_in);
-        
+            // getRelated([], staindId, access_token);
+            // console.log(app);
+            
+            res.cookie('accessToken', access_token);
+            res.cookie('refreshToken', refresh_token);
+            res.cookie('accessTokenExpiry', Date.now() + expires_in * 1000);
+            
 
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('/#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));
-      } else {
-        res.redirect('/#' +
-          querystring.stringify({
-            error: 'invalid_token'
-          }));
-      }
+            // we can also pass the token to the browser to make requests from there
+            res.redirect('/');
+        } else {
+            const stringifiedError = querystring.stringify({
+                    error: 'invalid_token'
+                });
+
+            res.redirect(`/?${stringifiedError}`);
+        }
     });
   }
 });
@@ -192,5 +188,16 @@ router.get('/login/refresh_token', function(req, res) {
   });
 });
 
-// module.exports = router;
+router.get('/logout', function(req: Request, res: Response) {
+    const stringifiedParams = querystring.stringify({
+            loggedOut: true
+        });
+
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    res.clearCookie('accessTokenExpiry');
+
+    res.redirect(`/?${stringifiedParams}`);
+});
+
 export default router;
