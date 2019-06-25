@@ -3,9 +3,10 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import ToolBar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import grey from '@material-ui/core/colors/grey';
 
-class Navbar extends React.PureComponent {
+import INavbarProps from './INavbarProps';
+
+class Navbar extends React.PureComponent<INavbarProps> {
     render() {
         return (
             <>
