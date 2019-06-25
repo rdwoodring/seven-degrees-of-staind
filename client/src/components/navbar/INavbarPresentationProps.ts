@@ -1,3 +1,4 @@
 export default interface INavbarPresentationProps {
-    isLoggedIn: Boolean
+    isLoggedIn: Boolean,
+    handleClickLoginLogoutButton(): void
 };
