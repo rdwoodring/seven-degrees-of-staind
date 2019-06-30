@@ -25,6 +25,7 @@ class HeroCardLoggedOutPresentation extends React.Component<IHeroCardPresentatio
                         search={this.props.search}
                         handleChangeSearchField={this.props.handleChangeSearchField}
                         handleKeyUpSearchField={this.props.handleKeyUpSearchField}
+                        handleClickSearchButton={this.props.handleClickSearchButton}
                     />
                 </CardActions>
             </Card>
