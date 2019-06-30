@@ -4,10 +4,9 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Search from '@material-ui/icons/Search'
-import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+
+import SearchWithButton from '../../searches/search-with-button/SearchWithButton';
 
 import IHeroCardPresentationProps from './IHeroCardPresentationProps';
 
@@ -22,23 +21,10 @@ class HeroCardLoggedOutPresentation extends React.Component<IHeroCardPresentatio
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <TextField 
-                        fullWidth={true}
-                        value={this.props.search} 
-                        onChange={this.props.handleChangeSearchField} 
-                        onKeyUp={this.props.handleKeyUpSearchField}
-                        margin="none" 
-                        variant="outlined"
-                        InputProps={{
-                            style: {
-                                boxSizing: 'border-box'
-                            },
-                            endAdornment: (
-                                <IconButton aria-label="Search" color="primary" onClick={this.props.handleClickSearchButton} edge='end'>
-                                    <Search />
-                                </IconButton>
-                            )
-                        }}
+                    <SearchWithButton 
+                        search={this.props.search}
+                        handleChangeSearchField={this.props.handleChangeSearchField}
+                        handleKeyUpSearchField={this.props.handleKeyUpSearchField}
                     />
                 </CardActions>
             </Card>
