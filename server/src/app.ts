@@ -22,6 +22,8 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 
+import session from 'express-session';
+
 import tokenRefresher from './middleware/token-refreshers/tokenRefresher';
 
 import main from './routes/index';
@@ -39,7 +41,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(session({
+    secret: 'thuper thecret',
+    resave: false,
+    saveUninitialized: true
+}));
+
+
 app.use(tokenRefresher);
+app.use((req: any, res: any, next: any) => {
+    console.log(req.session.accessToken);
+    console.log(req.session.accessTokenExpiry);
+    console.log(req.session.refreshToken);
+
+    next()
+})
 
 app.use(express.static(path.join(__dirname, '../../public')));
 
