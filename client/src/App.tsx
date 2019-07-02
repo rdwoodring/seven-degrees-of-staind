@@ -26,11 +26,7 @@ class App extends React.Component {
                                 <Home />
                             );
                         }} />
-                        <Route exact path="/search" render={() => {
-                            return (
-                                <WrappedSearch />
-                            );
-                        }} />
+                        <Route exact path="/search" component={WrappedSearch} />
                         <Route exact path="/403" render={() => {
                             return (
                                 <FourOhThree />
