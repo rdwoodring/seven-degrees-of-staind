@@ -16,7 +16,7 @@
         "debug": "^4.1.0",
         "dotenv": "^4.0.0",
         "express": "^4.16.4",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.14",
         "morgan": "^1.9.1",
         "p-queue": "^6.0.2",
         "query-string": "^6.8.1",
