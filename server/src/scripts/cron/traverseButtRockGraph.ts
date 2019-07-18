@@ -27,8 +27,9 @@ const staindId: string = '5KDIH2gF0VpelTqyQS7udb',
 
 let relatedArtists: any = {};
 
-// authorize
-getAuthorization().then((accessToken) => {
+function traverseButtRockGraph(): Promise<void> {
+    // authorize
+    return getAuthorization().then((accessToken) => {
         queue.add(() => {
             return getRelated([], staindId, accessToken)
         });
@@ -46,6 +47,7 @@ getAuthorization().then((accessToken) => {
         fs.writeFileSync('./related.json', JSON.stringify(transformedRelatedArtists), 'utf8');
         console.log('done');
     });
+}
 
 function getAuthorization(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -121,3 +123,5 @@ function getRelated(pathFromStaind: string[], id: string, accessToken: string): 
 
     return returnPromise;
 }
+
+export default traverseButtRockGraph;
