@@ -3,11 +3,14 @@ import {
     Response,
     NextFunction
 } from 'express';
+
 import * as request from 'request';
 
+import {SessionOptions} from 'express-session'
+
 export default function tokenRefresher(req: Request, res: Response, next: NextFunction) {
-    const accessTokenExpiry: number | undefined = req.cookies.accessTokenExpiry ? Number(req.cookies.accessTokenExpiry) : undefined,
-        refreshToken: string | undefined = req.cookies.refreshToken,
+    const accessTokenExpiry: number | undefined = req.session!.accessTokenExpiry ? Number(req.session!.accessTokenExpiry) : undefined,
+        refreshToken: string | undefined = req.session!.refreshToken,
         shouldRefreshToken: Boolean = Boolean(accessTokenExpiry && accessTokenExpiry < Date.now());
 
     if (shouldRefreshToken) {
@@ -29,16 +32,23 @@ export default function tokenRefresher(req: Request, res: Response, next: NextFu
                 const accessToken = body.access_token,
                     accessTokenExpiry = Date.now() + body.expires_in * 1000;
         
-              res.cookie('accessToken', accessToken);
-              res.cookie('accessTokenExpiry', accessTokenExpiry);                
+              req.session!.accessToken = accessToken;
+              req.session!.accessTokenExpiry = accessTokenExpiry;
+
+              req.cookies('loggedIn', true);
 
               next();
             } else {
                 // uh oh, error
                 // wipe the cookies, no access for lil johnny
-                res.clearCookie('accessToken');
-                res.clearCookie('accessTokenExpiry');
-                res.clearCookie('refreshToken');
+                // res.clearCookie('accessToken');
+                // res.clearCookie('accessTokenExpiry');
+                // res.clearCookie('refreshToken');
+                delete req.session!.accessToken;
+                delete req.session!.accessTokenExpiry;
+                delete req.session!.refreshToken;
+
+                req.clearCookie('loggedIn');
 
                 next(error);
             }

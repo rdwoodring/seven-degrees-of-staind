@@ -16,7 +16,7 @@ const withIsLoggedIn = (WrappedComponent: React.ComponentType<any>) => {
         }
 
         render() {
-            const hasAccessToken = Boolean(this.cookies.getCookie('accessToken')),
+            const hasAccessToken = Boolean(this.cookies.getCookie('loggedIn')),
                 enhancedProps = {
                     ...this.props,
                     isLoggedIn: hasAccessToken

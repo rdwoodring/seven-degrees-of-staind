@@ -140,10 +140,11 @@ router.get('/login/callback', function(req, res) {
             // getRelated([], staindId, access_token);
             // console.log(app);
             
-            res.cookie('accessToken', access_token);
-            res.cookie('refreshToken', refresh_token);
-            res.cookie('accessTokenExpiry', Date.now() + expires_in * 1000);
-            
+            req.session!.accessToken = access_token;
+            req.session!.refreshToken = refresh_token;
+            req.session!.accessTokenExpiry = Date.now() + expires_in * 1000;
+
+            res.cookie('loggedIn', true);
 
             // we can also pass the token to the browser to make requests from there
             res.redirect('/');
@@ -193,9 +194,11 @@ router.get('/logout', function(req: Request, res: Response) {
             loggedOut: true
         });
 
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
-    res.clearCookie('accessTokenExpiry');
+    delete req.session!.accessToken;
+    delete req.session!.refreshToken;
+    delete req.session!.accessTokenExpiry;
+
+    res.clearCookie('loggedIn');
 
     res.redirect(`/?${stringifiedParams}`);
 });

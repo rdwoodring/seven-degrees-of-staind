@@ -22,15 +22,29 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 
+import session from 'express-session';
+import connectMongo from 'connect-mongo';
+
 import tokenRefresher from './middleware/token-refreshers/tokenRefresher';
 
 import main from './routes/index';
 import login from './routes/login';
 import api from './routes/api';
 
-const app = express();
-
 dotenv.config();
+
+const app = express(),
+    MongoStore = connectMongo(session),
+    sessionSecret = process.env.SESSION_SECRET,
+    dbConnectionString = process.env.DB_CONN_STRING;
+
+if (!sessionSecret) {
+    throw new Error('Session secret was not provided. Make sure that the app is started with a SESSION_SECRET environment variable or with a SESSION_SECRET key in your .env file.');
+}
+
+if (!dbConnectionString) {
+    throw new Error('DB connection string was not provided. Make sure that the app is started with a DB_CONN_STRING environment variable or with a DB_CONN_STRING key in your .env file.');
+}
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -39,7 +53,24 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(session({
+    secret: sessionSecret,
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({
+        url: dbConnectionString
+    })
+}));
+
+
 app.use(tokenRefresher);
+app.use((req: any, res: any, next: any) => {
+    console.log(req.session.accessToken);
+    console.log(req.session.accessTokenExpiry);
+    console.log(req.session.refreshToken);
+
+    next()
+})
 
 app.use(express.static(path.join(__dirname, '../../public')));
 

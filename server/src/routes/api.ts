@@ -7552,9 +7552,9 @@ const related: any = {
 }
 
 router.use('/api/*', function(req: Request, res: Response, next: NextFunction) {
-    const accessTokenExpiry: number | undefined = req.cookies.accessTokenExpiry ? parseInt(req.cookies.accessTokenExpiry) : void(0),
-        accessToken: string = req.cookies.accessToken,
-        refreshToken: string = req.cookies.refreshToken;
+    const accessTokenExpiry: number | undefined = req.session!.accessTokenExpiry ? parseInt(req.session!.accessTokenExpiry) : void(0),
+        accessToken: string = req.session!.accessToken,
+        refreshToken: string = req.session!.refreshToken;
 
         let err: Error | undefined;
 
@@ -7589,7 +7589,7 @@ router.use('/api/*', function(req: Request, res: Response, next: NextFunction) {
 router.get('/api/v1/search', function (req: Request, res: Response, next: NextFunction) {
     var options = {
         url: 'https://api.spotify.com/v1/search?q=' + req.query.artist + '&type=artist&market=US&limit=10',
-        headers: {'Authorization': 'Bearer ' + req.cookies.accessToken},
+        headers: {'Authorization': 'Bearer ' + req.session!.accessToken},
         json: true
     };
 
