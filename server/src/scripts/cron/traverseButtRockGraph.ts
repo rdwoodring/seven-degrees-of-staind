@@ -19,7 +19,7 @@ if (!process.env.DB_CONN_STRING) {
 
 const staindId: string = '5KDIH2gF0VpelTqyQS7udb',
     queue = new Queue({
-        concurrency: 2
+        concurrency: 10
     }),
     clientId: string = process.env.CLIENT_ID,
     clientSecret: string = process.env.CLIENT_SECRET,
@@ -80,7 +80,7 @@ function getAuthorization(): Promise<string> {
 function getRelated(pathFromStaind: string[], id: string, accessToken: string): Promise<void> {
     let returnPromise = Promise.resolve();
 
-    if (!relatedArtists[id] && pathFromStaind.length < 6) {
+    if (!relatedArtists[id] && pathFromStaind.length < 7) {
         returnPromise = new Promise((resolve) => {
             setTimeout(() => {
                 relatedArtists[id] = pathFromStaind;
@@ -93,6 +93,7 @@ function getRelated(pathFromStaind: string[], id: string, accessToken: string): 
         
                 // // use the access token to access the Spotify Web API
                 console.log(`Fetching related artists for ${id}...`);
+                console.log(`${queue.size} items in the queue...`);
                 request.get(options, function(error: any, response: any, body: any) {
                     if (error) {
                         console.log(error);
