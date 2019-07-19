@@ -27,8 +27,23 @@ Finally, you will need an instance of MongoDB. You can probably use one of Mongo
 9. Run `mongod --db-path='path/to/your/data/directory'`
 10. Run `npm run build-server-ts` to compile the TypeScript server code into JavaScript that Node can run
 11. Run `npm start` to start the Node server
+12. [Import the butt rock related artists graph](#importing-butt-rock-artists) into your database
 
 You should now be able to access the app on [localhost:3000](localhost:3000).
+
+#### Importing Butt Rock Artists
+There are two ways you can get some butt rock related artists imported into your development database:
+
+##### Import Manually Using a Pre-built Related Artists JSON
+1. Download the [related.json](https://gist.github.com/rdwoodring/0ab919e723669de447611def7ff5a84f) file from the gist. This file was generated from a recent import done during development.
+2. Place it in the root of Seven Degrees of Staind project
+3. Ensure that mongod is running
+3. Run the `mongoimport --uri ${process.env.DB_CONN_STRING} --collection relatedArtists --drop --jsonArray --file ./related.json` command from the root of your Seven Degrees of Staind project.
+
+##### Import Using the Import Scripts
+1. Ensure that your TypeScript has been compiled to JavaScript.
+2. Ensure that mongod is running
+3. Run the `node ./server/dist/scripts/cron/updateButtRockGraph` from the root of your Seven Degrees of Staind project.
 
 ## Deployment
 

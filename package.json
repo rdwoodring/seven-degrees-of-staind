@@ -20,6 +20,7 @@
         "express-session": "^1.16.2",
         "lodash": "^4.17.14",
         "morgan": "^1.9.1",
+        "p-queue": "^6.0.2",
         "query-string": "^6.8.1",
         "request": "^2.88.0",
         "serve-favicon": "^2.5.0"
@@ -37,6 +38,7 @@
         "@types/query-string": "^6.3.0",
         "@types/request": "^2.48.1",
         "concurrently": "^4.1.0",
+        "mongodb": "^3.2.7",
         "nodemon": "^1.19.1",
         "typescript": "^3.4.5"
     }
