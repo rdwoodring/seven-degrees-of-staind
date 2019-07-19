@@ -12,6 +12,8 @@ You will need to install a copy of [Node.js](https://nodejs.org/en/download/) to
 
 You will also need to have either NPM or Yarn installed. NPM comes packaged with Node.js so you'll get that for free by installing Node.js. If you want to use [Yarn](https://yarnpkg.com/en/docs/install) download the appropriate installer and follow the installation wizard. Yarn should work fine, but note that the project was developed using NPM and the instructions are based on NPM.
 
+Finally, you will need an instance of MongoDB. You can probably use one of Mongo's free cloud instances, but the project was developed using a copy of [MongoDB](https://www.mongodb.com/download-center/community) locally. MongoDB is primarily used for secure, server-side storage of session data so that the access token and refresh token returned from Spotify don't have to be stored client-side in something like a cookie.
+
 ### Installing
 
 1. Clone the repository
@@ -20,8 +22,11 @@ You will also need to have either NPM or Yarn installed. NPM comes packaged with
 4. Login to your Spotify account and get an API key
 5. Add CLIENT_ID=your_spotify_app_client_id to your .env file
 6. Add CLIENT_SECRET=your_spotify_app_client_secret to your .env file
-7. Run `npm run build-server-ts` to compile the TypeScript server code into JavaScript that Node can run
-8. Run `npm start` to start the Node server
+7. Add SESSION_SECRET=a_strong_random_string to your .env file
+8. Add DB_CONN_STRING=my_db_connection_string to your .env file. If you installed MongoDB locally, the connection string will look something like this: `mongodb://localhost:1234/my-seven-degrees-of-staind-dev-db-cluster`
+9. Run `mongod --db-path='path/to/your/data/directory'`
+10. Run `npm run build-server-ts` to compile the TypeScript server code into JavaScript that Node can run
+11. Run `npm start` to start the Node server
 
 You should now be able to access the app on [localhost:3000](localhost:3000).
 
@@ -34,6 +39,7 @@ TODO
 * [Node.js](https://nodejs.org/) - Web framework
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [TypeScript](https://www.typescriptlang.org/)
+* [MongoDB](https://www.mongodb.com/) - Persistent server-side storage
 
 ## Contributing
 
