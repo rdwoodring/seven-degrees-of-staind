@@ -35,7 +35,7 @@ export default function tokenRefresher(req: Request, res: Response, next: NextFu
               req.session!.accessToken = accessToken;
               req.session!.accessTokenExpiry = accessTokenExpiry;
 
-              req.cookies('loggedIn', true);
+              res.cookie('loggedIn', true);
 
               next();
             } else {
