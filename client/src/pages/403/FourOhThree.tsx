@@ -7,10 +7,30 @@ import IFourOhThreeProps from './IFourOhThreeProps';
 import FourOhThreePresentation from './FourOhThreePresentation';
 
 class FourOhThree extends React.Component<IFourOhThreeProps & RouteComponentProps> {
+    constructor(props: IFourOhThreeProps & RouteComponentProps) {
+        super(props);
+
+        this.bindMethods();
+    }
+
+    bindMethods() {
+        this.handleClickLoginButton = this.handleClickLoginButton.bind(this);
+
+        return this;
+    }
+
     render() {
+        const fourOhThreePresentationProps = {
+            handleClickLoginButton: this.handleClickLoginButton
+        };
+
         return (
-            <FourOhThreePresentation />
-        )
+            <FourOhThreePresentation {...fourOhThreePresentationProps} />
+        );
+    }
+
+    handleClickLoginButton() {
+        window.location.href = '/login';
     }
 }
 
