@@ -1,1 +1,3 @@
-export default interface IFourOhThreePresentationProps {};
+export default interface IFourOhThreePresentationProps {
+    handleClickLoginButton(): void
+};
