@@ -10,7 +10,7 @@ dotenv.config();
 
 function importRelatedArtists(): Promise<void> {
     return new Promise((resolve) => {
-        const command = `mongoimport --uri ${process.env.DB_CONN_STRING} --collection relatedArtists --drop --jsonArray --file ./related.json`;
+        const command = `mongoimport --uri ${process.env.DB_CONN_STRING} --collection relatedartists --drop --jsonArray --file ./related.json`;
     
         exec(command, (err, stdout, stderr) => {
             fs.unlink('./related.json', () => {
