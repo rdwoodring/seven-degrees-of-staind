@@ -25,7 +25,7 @@ class HomePresentation extends React.Component<IHomePresentationProps> {
                 </div>
                 <br />
                 <div>
-                    <Grid container spacing={8} justify="center" xs={12}>
+                    <Grid container spacing={2} justify="center" alignContent="center">
                         <Grid item xs={4}>
                             <Card raised={true}>
                                 <CardHeader title={`Nothing "butt" rock!`} />
