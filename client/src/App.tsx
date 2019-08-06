@@ -7,6 +7,7 @@ import Navbar from './components/navbar/Navbar';
 import Home from './pages/home/Home';
 import Search from './pages/search/Search';
 import FourOhThree from './pages/403/FourOhThree';
+import FourOhFour from './pages/404/FourOhFour';
 
 import withIsLoggedIn from './HOCs/withIsLoggedIn/withIsLoggedIn';
 import withMustBeLoggedInToView from './HOCs/withMustBeLoggedInToView/withMustBeLoggedInToView';
@@ -46,6 +47,16 @@ class App extends React.Component<WithStyles<typeof styles>> {
                             <Route exact path="/403" render={() => {
                                 return (
                                     <FourOhThree />
+                                );
+                            }} />
+                            <Route exact path="/404" render={() => {
+                                return (
+                                    <FourOhFour />
+                                );
+                            }} />
+                            <Route path="*" render={() => {
+                                return (
+                                    <FourOhFour />
                                 );
                             }} />
                         </Switch>
