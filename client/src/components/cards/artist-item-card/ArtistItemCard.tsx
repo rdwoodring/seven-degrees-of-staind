@@ -9,6 +9,8 @@ import Box from '@material-ui/core/Box';
 
 import Typography from '@material-ui/core/Typography';
 
+import Photo from '@material-ui/icons/Photo';
+
 import IArtistItemCardProps from './IArtistItemCardProps';
 
 const styles = createStyles({
@@ -16,26 +18,36 @@ const styles = createStyles({
         width: '100px',
         height: '100px',
         backgroundImage: (props: IArtistItemCardProps) => {
-            return `url(${props.images[0].url})`
+            return `url(${props.images.length ? props.images[0].url : ''})`
         },
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         borderRadius: '50%',
         margin: '5px'
+    },
+    'artist-avatar-placeholder-wrapper': {
+        width: '100px',
+        height: '100px',
+        borderRadius: '50%',
+        margin: '5px'
+    },
+    'artist-avatar-placeholder': {
+        width: '100%',
+        height: '100%'
     }
 });
 
-class ArtistCardItem extends React.PureComponent<IArtistItemCardProps> {
+class ArtistCardItem extends React.PureComponent<IArtistItemCardProps & WithStyles<typeof styles>> {
     render() {
-        const { classes } = this.props;
+        const { classes } = this.props,
+            artistAvatarMarkup = this.generateArtistAvatarMarkup();
 
         return (
             <Card raised={true} >
                 <Box display="flex" flexDirection="row">
                     <Box display="flex" alignItems="center">
-                        <div className={classes['artist-avatar']}>
-                        </div>
+                        {artistAvatarMarkup}
                     </Box>
                     
                     <CardContent>
@@ -51,6 +63,26 @@ class ArtistCardItem extends React.PureComponent<IArtistItemCardProps> {
         );
     }
     
+    private generateArtistAvatarMarkup() {
+        const { classes } = this.props;
+
+        let markup;
+
+        if (this.props.images.length) {
+            markup = (
+                <div className={classes['artist-avatar']}>
+                </div>
+            );
+        } else {
+            markup = (
+                <div className={classes['artist-avatar-placeholder-wrapper']}>
+                    <Photo color="disabled" className={classes['artist-avatar-placeholder']} />
+                </div>
+            );
+        }
+
+        return markup;
+    }
 }
 
 export default withStyles(styles)(ArtistCardItem);
