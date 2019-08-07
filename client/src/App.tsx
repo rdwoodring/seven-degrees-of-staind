@@ -56,7 +56,7 @@ class App extends React.Component<WithStyles<typeof styles>> {
                             }} />
                             <Route path="*" render={() => {
                                 return (
-                                    <FourOhFour />
+                                    <Redirect to="/404" />
                                 );
                             }} />
                         </Switch>
