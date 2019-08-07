@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
 
 import Navbar from './components/navbar/Navbar';
@@ -32,11 +32,11 @@ class App extends React.Component<WithStyles<typeof styles>> {
         const { classes } = this.props;
         return (
             <>
-                <div className={classes['nav-bar-wrapper']}>
-                    <WrappedNavbar />
-                </div>
-                <div className={classes['app-body-wrapper']}>
-                    <BrowserRouter>
+                <BrowserRouter>
+                    <div className={classes['nav-bar-wrapper']}>
+                        <WrappedNavbar />
+                    </div>
+                    <div className={classes['app-body-wrapper']}>
                         <Switch>
                             <Route exact path="/" render={() => {
                                 return (
@@ -60,8 +60,8 @@ class App extends React.Component<WithStyles<typeof styles>> {
                                 );
                             }} />
                         </Switch>
-                    </BrowserRouter>
-                </div>
+                    </div>
+                </BrowserRouter>
             </>
         );
     }

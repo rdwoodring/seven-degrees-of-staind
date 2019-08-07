@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
 
+import { Link } from 'react-router-dom';
+
 import INavbarPresentationProps from './INavbarPresentationProps';
 
 const styles = createStyles({
@@ -19,6 +21,13 @@ const styles = createStyles({
         padding: '0 15px',
         maxWidth: '1000px' ,
         margin: '0 auto' 
+    },
+    'toolbar': {
+        padding: '0px'
+    },
+    'logo-link': {
+        color: 'inherit',
+        textDecoration: 'none'
     }
 });
 
@@ -30,13 +39,15 @@ class Navbar extends React.PureComponent<INavbarPresentationProps & WithStyles<t
         return (
             <>
                 <AppBar position="static">
-                    <ToolBar>
+                    <ToolBar className={classes['toolbar']}>
                         <div className={classes['nav-bar']}>
                             <Grid justify="space-between" container alignItems="center" alignContent="center">
                                 <Grid item>
-                                    <Typography color="inherit" component="h1" variant="h6" gutterBottom>
-                                        Seven Degrees of Staind
-                                    </Typography>
+                                    <Link to="/" className={classes['logo-link']}>
+                                        <Typography color="inherit" component="h1" variant="h6" gutterBottom>
+                                            Seven Degrees of Staind
+                                        </Typography>
+                                    </Link>
                                 </Grid>
                                 <Grid item>
                                     <Button size="medium" variant="contained" color="secondary" onClick={this.props.handleClickLoginLogoutButton}>
