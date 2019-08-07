@@ -1,46 +1,56 @@
 import React from 'react';
 
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
 
-import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
+import Box from '@material-ui/core/Box';
 
 import Typography from '@material-ui/core/Typography';
 
 import IArtistItemCardProps from './IArtistItemCardProps';
 
+const styles = createStyles({
+    'artist-avatar': {
+        width: '100px',
+        height: '100px',
+        backgroundImage: (props: IArtistItemCardProps) => {
+            return `url(${props.images[0].url})`
+        },
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        borderRadius: '50%',
+        margin: '5px'
+    }
+});
+
 class ArtistCardItem extends React.PureComponent<IArtistItemCardProps> {
     render() {
+        const { classes } = this.props;
+
         return (
             <Card raised={true} >
-                <Grid container>
-                    <Grid item xs={2}>
-                        <div style={{
-                            width: '100%',
-                            height: '100%',
-                            backgroundImage: `url(${this.props.images[0].url})`,
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat'
-                        }}>
-
+                <Box display="flex" flexDirection="row">
+                    <Box display="flex" alignItems="center">
+                        <div className={classes['artist-avatar']}>
                         </div>
-                    </Grid>
-                    <Grid item xs={10}>
-                        <CardContent>
-                            <Typography variant="h4" component="h2">
-                                {this.props.name}
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                But are they Butt Rock? ...{this.props.isbuttrock ? 'Oh Yeah' : 'Nah'}
-                            </Typography>
-                        </CardContent>
-                    </Grid>
-                </Grid>
+                    </Box>
+                    
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            {this.props.name}
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                            But are they Butt Rock? ...{this.props.isbuttrock ? 'Oh Yeah' : 'Nah'}
+                        </Typography>
+                    </CardContent>
+                </Box>
             </Card>
         );
     }
+    
 }
 
-export default ArtistCardItem;
+export default withStyles(styles)(ArtistCardItem);
