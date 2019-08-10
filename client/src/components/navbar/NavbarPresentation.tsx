@@ -15,6 +15,9 @@ import { Link } from 'react-router-dom';
 import INavbarPresentationProps from './INavbarPresentationProps';
 
 const styles = createStyles({
+    'app-bar': {
+        marginBottom: '15px'
+    },
     'nav-bar': {
         width: '100%',
         boxSizing: 'border-box',
@@ -38,7 +41,7 @@ class Navbar extends React.PureComponent<INavbarPresentationProps & WithStyles<t
 
         return (
             <>
-                <AppBar position="static">
+                <AppBar position="sticky" className={classes['app-bar']}>
                     <ToolBar className={classes['toolbar']}>
                         <div className={classes['nav-bar']}>
                             <Grid justify="space-between" container alignItems="center" alignContent="center">
