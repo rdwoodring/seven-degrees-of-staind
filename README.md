@@ -24,7 +24,7 @@ Finally, you will need an instance of MongoDB. You can probably use one of Mongo
 6. Add CLIENT_SECRET=your_spotify_app_client_secret to your .env file
 7. Add SESSION_SECRET=a_strong_random_string to your .env file
 8. Add DB_CONN_STRING=my_db_connection_string to your .env file. If you installed MongoDB locally, the connection string will look something like this: `mongodb://localhost:1234/my-seven-degrees-of-staind-dev-db-cluster`
-9. Run `mongod --db-path='path/to/your/data/directory'`
+9. Run `mongod --dbpath='path/to/your/data/directory'`
 10. Run `npm run watch` to compile the TypeScript server and client code into JavaScript that Node can run. This command runs the server behind [nodemon](https://www.npmjs.com/package/nodemon) so the server gets restarted on all changes and also ensures that the client code gets re-overlayed on all changes.
 11. [Import the butt rock related artists graph](#importing-butt-rock-artists) into your database
 
