@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Box from '@material-ui/core/Box';
+
 import ISearchPresentationProps from './ISearchPresentationProps';
 
 import SearchWithButton from '../../components/searches/search-with-button/SearchWithButton';
@@ -11,12 +13,14 @@ class SearchPresentation extends React.Component<ISearchPresentationProps> {
 
         return (
             <div>
-                <SearchWithButton
-                    search={this.props.artist}
-                    handleChangeSearchField={this.props.handleChangeSearchField}
-                    handleKeyUpSearchField={this.props.handleKeyUpSearchField}
-                    handleClickSearchButton={this.props.handleClickSearchButton}
-                />
+                <Box mb={2}>
+                    <SearchWithButton
+                        search={this.props.artist}
+                        handleChangeSearchField={this.props.handleChangeSearchField}
+                        handleKeyUpSearchField={this.props.handleKeyUpSearchField}
+                        handleClickSearchButton={this.props.handleClickSearchButton}
+                    />
+                </Box>
                 <div>
                     {artistMarkup}
                 </div>
