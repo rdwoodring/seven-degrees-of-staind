@@ -54,6 +54,9 @@ class ArtistCardItem extends React.PureComponent<IArtistItemCardProps & WithStyl
                         <Typography variant="h5" component="h2">
                             {this.props.name}
                         </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            Popularity: {this.props.popularity} &bull; Followers: {this.props.followers.total}
+                        </Typography>
                         <Typography variant="body1" gutterBottom>
                             But are they Butt Rock? ...{this.props.isbuttrock ? 'Oh Yeah' : 'Nah'}
                         </Typography>
