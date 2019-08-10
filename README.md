@@ -37,7 +37,7 @@ There are two ways you can get some butt rock related artists imported into your
 1. Download the [related.json](https://gist.github.com/rdwoodring/0ab919e723669de447611def7ff5a84f) file from the gist. This file was generated from a recent import done during development.
 2. Place it in the root of Seven Degrees of Staind project
 3. Ensure that mongod is running
-3. Run the `mongoimport --uri ${process.env.DB_CONN_STRING} --collection relatedArtists --drop --jsonArray --file ./related.json` command from the root of your Seven Degrees of Staind project.
+3. Run the `mongoimport --uri ${process.env.DB_CONN_STRING} --collection relatedartists --drop --jsonArray --file ./related.json` command from the root of your Seven Degrees of Staind project.
 
 ##### Import Using the Import Scripts
 1. Ensure that your TypeScript has been compiled to JavaScript.
