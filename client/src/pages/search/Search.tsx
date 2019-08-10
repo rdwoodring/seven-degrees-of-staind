@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import {RouteComponentProps} from 'react-router-dom';
 
 import queryString from 'query-string';
@@ -62,6 +63,8 @@ class Search extends React.Component<ISearchProps & RouteComponentProps, ISearch
 
     handleClickSearchButton() {
         this.doSearch();
+
+        this.props.history.push(`/search?artist=${this.state.artist}`);
     }
 
     private extractSearchFromProps(): string {
@@ -96,4 +99,5 @@ class Search extends React.Component<ISearchProps & RouteComponentProps, ISearch
     }
 }
 
-export default Search;
+export default withRouter(Search);
+export {Search};
