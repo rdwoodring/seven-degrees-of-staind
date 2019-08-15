@@ -5,10 +5,10 @@
 version: 2
 jobs:
   test_server:
-    branches:
-      only:
-        - master
-        - /releases*/
+    # branches:
+    #   only:
+    #     - master
+    #     - /releases*/
 
     docker:
       # specify the version you desire here
@@ -42,10 +42,10 @@ jobs:
       - run: npm run test
 
   test_client:
-    branches:
-      only:
-        - master
-        - /releases*/
+    # branches:
+    #   only:
+    #     - master
+    #     - /releases*/
 
     docker:
       # specify the version you desire here
