@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  test_server:
     branches:
       only:
         - master
@@ -41,7 +41,7 @@ jobs:
       # run tests!
       - run: npm test
 
-  build:
+  test_client:
     branches:
       only:
         - master
