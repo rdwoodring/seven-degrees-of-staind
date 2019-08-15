@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
+        "test": "echo no tests man",
         "start": "node ./bin/www",
         "build-server-ts": "tsc",
         "watch-node": "nodemon dist ./bin/www",
