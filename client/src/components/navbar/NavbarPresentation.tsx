@@ -3,7 +3,6 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import ToolBar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import aaa from '@material-ui/core/colors/'
 import Grid from '@material-ui/core/Grid';
 
 import Typography from '@material-ui/core/Typography';
@@ -34,7 +33,7 @@ const styles = createStyles({
     }
 });
 
-class Navbar extends React.PureComponent<INavbarPresentationProps & WithStyles<typeof styles>> {
+class NavbarPresentation extends React.PureComponent<INavbarPresentationProps & WithStyles<typeof styles>> {
     render() {
         const loginLogoutButtonLabel = this.props.isLoggedIn ? 'Logout' : 'Login',
             { classes } = this.props;
@@ -66,4 +65,4 @@ class Navbar extends React.PureComponent<INavbarPresentationProps & WithStyles<t
     }
 }
 
-export default withStyles(styles)(Navbar);
+export default withStyles(styles)(NavbarPresentation);
