@@ -29,7 +29,8 @@
     "start": "react-scripts start",
     "watch": "node scripts/watch",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
+    "watch-test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
