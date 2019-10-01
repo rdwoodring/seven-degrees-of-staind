@@ -12,7 +12,8 @@ argv.push('--config', JSON.stringify({
         "server/src"
     ],
     "transform": {
-        "^.+\\.spec\\.tsx?$": "ts-jest"
+        "^.+\\.spec\\.tsx?$": "ts-jest",
+        "^.+\\.tsx?$": "ts-jest"
     }
 }));
 
