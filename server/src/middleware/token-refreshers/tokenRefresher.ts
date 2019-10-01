@@ -4,7 +4,7 @@ import {
     NextFunction
 } from 'express';
 
-import * as request from 'request';
+import request from 'request';
 
 import {SessionOptions} from 'express-session'
 
