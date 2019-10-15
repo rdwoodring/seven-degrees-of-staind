@@ -17,4 +17,6 @@ argv.push('--config', JSON.stringify({
     }
 }));
 
+argv.push('--env=node');
+
 jest.run(argv);
