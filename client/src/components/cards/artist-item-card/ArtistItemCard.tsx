@@ -40,8 +40,7 @@ const styles = createStyles({
 
 class ArtistItemCard extends React.PureComponent<IArtistItemCardProps & WithStyles<typeof styles>> {
     render() {
-        const { classes } = this.props,
-            artistAvatarMarkup = this.generateArtistAvatarMarkup();
+        const  artistAvatarMarkup = this.generateArtistAvatarMarkup();
 
         return (
             <Card raised={true} >
