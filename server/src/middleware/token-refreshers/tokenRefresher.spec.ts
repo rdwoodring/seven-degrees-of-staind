@@ -96,7 +96,7 @@ describe('when called', () => {
                     expect(mockPost.mock.calls[0][0]).toEqual({
                         url: 'https://accounts.spotify.com/api/token',
                         headers: {
-                            'Authorization': `Basic ${new Buffer('joker:riddler').toString('base64')}`
+                            'Authorization': `Basic ${Buffer.from('joker:riddler').toString('base64')}`
                         },
                         form: {
                             grant_type: 'refresh_token',
