@@ -23,9 +23,17 @@ beforeEach(() => {
 });
 
 describe('render', () => {
-    it('should render a SearchWithButton as a child', () => {
+    it('should render a Button as a child', () => {
         const wrapper = shallow<HeroCardLoggedOutPresentation>(<HeroCardLoggedOutPresentation {...data} />);
 
         expect(wrapper.find(Button).length).toBe(1);
     });
+
+    describe('when rendering Button', () => {
+        it('should pass the handleClickLoginButton as onClick', () => {
+            const wrapper = shallow<HeroCardLoggedOutPresentation>(<HeroCardLoggedOutPresentation {...data} />);
+
+            expect(wrapper.find(Button).props().onClick).toEqual(data.handleClickLoginButton);
+        })
+    })
 });

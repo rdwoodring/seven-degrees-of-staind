@@ -20,7 +20,7 @@ class HeroCardLoggedOutPresentation extends React.Component<IHeroCardPresentatio
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="large" variant="contained" color="primary" onClick={() => {console.log('hi')}}>
+                    <Button size="large" variant="contained" color="primary" onClick={this.props.handleClickLoginButton}>
                         Login to Spotify
                     </Button>
                 </CardActions>
