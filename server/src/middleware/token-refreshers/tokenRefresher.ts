@@ -4,7 +4,7 @@ import {
     NextFunction
 } from 'express';
 
-import * as request from 'request';
+import request from 'request';
 
 import {SessionOptions} from 'express-session'
 
@@ -18,7 +18,7 @@ export default function tokenRefresher(req: Request, res: Response, next: NextFu
             authOptions = {
                 url: 'https://accounts.spotify.com/api/token',
                 headers: { 
-                    'Authorization': `Basic ${(new Buffer(authString).toString('base64'))}`
+                    'Authorization': `Basic ${(Buffer.from(authString).toString('base64'))}`
                 },
                 form: {
                     grant_type: 'refresh_token',

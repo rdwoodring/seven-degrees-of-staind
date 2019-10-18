@@ -70,3 +70,4 @@ class HeroCard extends React.Component<IHeroCardProps & RouteComponentProps, IHe
 }
 
 export default withRouter(HeroCard);
+export { HeroCard };

@@ -66,5 +66,8 @@
   },
   "include": [
     "server/src"
+  ],
+  "exclude": [
+    "server/src/**/*.spec.ts"
   ]
 }

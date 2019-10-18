@@ -29,7 +29,7 @@ class Home extends React.Component<IHomeProps & RouteComponentProps> {
         );
     }
 
-    handleClickHeroLoginButton(e: React.SyntheticEvent) {
+    handleClickHeroLoginButton() {
         // history.pushState('/login', 'Login');
         this.props.history.push('/login');
     }

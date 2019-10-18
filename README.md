@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/rdwoodring/seven-degrees-of-staind/tree/master.svg?style=svg)](https://circleci.com/gh/rdwoodring/seven-degrees-of-staind/tree/master)
 # Seven Degrees of Staind (Butt Rock Classifier)
 
 At work, we got tired of arguing over which bands were or were not [butt rock](https://www.urbandictionary.com/define.php?term=Butt%20Rock), so we wanted an objective way to make the determination. Everyone could agree that Staind was the epicenter of butt rock, so this app uses Spotify's Related Artist API to build a tree of related artists seven degrees out from Staind to classify what's butt rock.

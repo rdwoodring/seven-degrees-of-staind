@@ -38,10 +38,9 @@ const styles = createStyles({
     }
 });
 
-class ArtistCardItem extends React.PureComponent<IArtistItemCardProps & WithStyles<typeof styles>> {
+class ArtistItemCard extends React.PureComponent<IArtistItemCardProps & WithStyles<typeof styles>> {
     render() {
-        const { classes } = this.props,
-            artistAvatarMarkup = this.generateArtistAvatarMarkup();
+        const  artistAvatarMarkup = this.generateArtistAvatarMarkup();
 
         return (
             <Card raised={true} >
@@ -88,4 +87,4 @@ class ArtistCardItem extends React.PureComponent<IArtistItemCardProps & WithStyl
     }
 }
 
-export default withStyles(styles)(ArtistCardItem);
+export default withStyles(styles)(ArtistItemCard);

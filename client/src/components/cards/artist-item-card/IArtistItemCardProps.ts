@@ -1,4 +1,4 @@
-export default interface IArtistSearchResultItem {
+export default interface IArtistItemCardProps {
     external_urls: {
         spotify: string
     }

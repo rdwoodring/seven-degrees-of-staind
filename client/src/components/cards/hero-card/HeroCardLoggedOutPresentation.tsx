@@ -5,7 +5,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import IHeroCardPresentationProps from './IHeroCardPresentationProps';
@@ -21,7 +20,7 @@ class HeroCardLoggedOutPresentation extends React.Component<IHeroCardPresentatio
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="large" variant="contained" color="primary" onClick={() => {console.log('hi')}}>
+                    <Button size="large" variant="contained" color="primary" onClick={this.props.handleClickLoginButton}>
                         Login to Spotify
                     </Button>
                 </CardActions>
