@@ -22,6 +22,14 @@ const searchGetHandler = function(req: Request, res: Response, next: NextFunctio
             res.status(404);
             
             next(err);
+
+            // woof, this is kind of a lame concession to how
+            // awkward this is to unit test since
+            // half of it is synchronous (or at least callback
+            // driven which can be made mock synchronous in test)
+            // TODO: resolve at least some of this by replacing
+            // request here with axios or something more elegant
+            return Promise.resolve();
         }
         else {
             let returnPromise;
@@ -81,7 +89,7 @@ const searchGetHandler = function(req: Request, res: Response, next: NextFunctio
                 });
             }
             
-            returnPromise.then((body) => {
+            return returnPromise.then((body) => {
                 res.json(body);
             });
         }

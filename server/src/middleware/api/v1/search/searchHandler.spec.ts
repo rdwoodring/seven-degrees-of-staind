@@ -8,10 +8,13 @@ import {searchGetHandler} from './searchHandler';
 
 import request from 'request';
 
+import RelatedArtist from '../../../../database/models/RelatedArtist';
+
 let req: Request,
     res: Response,
     next: NextFunction,
     nextPromise: Promise<void>,
+    resJsonPromise: Promise<void>,
     mockGet: jest.SpyInstance;
 
 beforeEach(() => {
@@ -29,7 +32,8 @@ beforeEach(() => {
     } as any;
 
     res = {
-        status: jest.fn()
+        status: jest.fn(),
+        json: jest.fn()
     } as any;
 
     next = jest.fn(() => {
@@ -102,14 +106,127 @@ describe('when called', () => {
             });
         });
 
+        // this is kind of a gross way to handle this whole path
         describe('when no error is returned', () => {
-            // describe('when the body contains an artists key and the artists key contains items', () => {
+            let mockGetPromise: Promise<void>,
+                mockFind: jest.SpyInstance,
+                mockWhere: jest.SpyInstance,
+                mockIn: jest.SpyInstance;
 
-            // });
+            describe('when the body contains an artists key and the artists key contains items', () => {
+                beforeEach(() => {
+                    mockGetPromise = new Promise((resolve) => {
+                        mockGet.mockImplementation((opts, cb) => {
+                            cb(null, null, {
+                                artists: {
+                                    items: [
+                                        {
+                                            id: 'aaa'
+                                        },
+                                        {
+                                            id: 'bbb'
+                                        }
+                                    ]
+                                }
+                            }).then(() => {
+                                resolve();
+                            });
+                        });
+                    });
 
-            // describe('when the body does not contain an artists key', () => {
-            //     it('should ')
-            // })
+                    mockFind = jest.spyOn(RelatedArtist, 'find');
+                    mockWhere = jest.spyOn(RelatedArtist, 'where');
+                    // mockIn = jest.spyOn(RelatedArtist, 'in');
+
+                    // jest.spyOn(RelatedArtist, 'find')
+                    // jest.spyOn(RelatedArtist, 'find')
+                    mockFind.mockImplementation(() => {
+                        return RelatedArtist;
+                    });
+
+                    mockWhere.mockImplementation(() => {
+                        mockIn = jest.fn(() => {
+                            return Promise.resolve([
+                                {
+                                    id: 'aaa'
+                                },
+                                {
+                                    id: 'bob ross'
+                                }
+                            ])
+                        });
+
+                        return {
+                            in: mockIn
+                        };
+                    })
+                });
+
+                it('should call res\'s json', () => {
+                    searchGetHandler(req, res, next);
+
+                    return mockGetPromise.then(() => {
+                        return expect(res.json).toHaveBeenCalled();
+                    });
+                });
+
+                describe('when calling res\'s json', () => {
+                    it('should pass a response object', () => {
+                        searchGetHandler(req, res, next);
+
+                        return mockGetPromise.then(() => {
+                            return expect(res.json).toHaveBeenCalledWith({
+                                artists: {
+                                    items: [
+                                        {
+                                            id: 'aaa',
+                                            isbuttrock: true
+                                        },
+                                        {
+                                            id: 'bbb',
+                                            isbuttrock: false
+                                        }
+                                    ]
+                                }
+                            });
+                        }); 
+                    });
+                });
+            });
+
+            describe('when the body does not contain an artists key', () => {
+                beforeEach(() => {
+                    mockGetPromise = new Promise((resolve) => {
+                        mockGet.mockImplementation((opts, cb) => {
+                            cb(null, null).then(() => {
+                                resolve();
+                            });
+                        });
+                    });
+                });
+
+                it('should call res\'s json', () => {
+                    searchGetHandler(req, res, next);
+
+                    return mockGetPromise.then(() => {
+                        return expect(res.json).toHaveBeenCalled();
+                    });
+                });
+
+                describe('when calling res\'s json', () => {
+                    it('should pass a response object', () => {
+                        searchGetHandler(req, res, next);
+
+                        return mockGetPromise.then(() => {
+                            return expect(res.json).toHaveBeenCalledWith({
+                                artists: {
+                                    items: []
+                                }
+                            });
+                        }); 
+                    });
+                });
+            });
         });
     });
 });
