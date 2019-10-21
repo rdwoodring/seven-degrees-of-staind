@@ -64,4 +64,8 @@ server/dist
 client/dist
 public/static
 public/asset-manifest.json
+public/favicon.ico
 public/index.html
+public/manifest.json
+public/precache-manifest.*.js
+public/service-worker.js
