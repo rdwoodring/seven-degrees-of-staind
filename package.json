@@ -21,7 +21,7 @@
         "express": "4.16.4",
         "express-session": "1.16.2",
         "lodash": "4.17.14",
-        "mongoose": "5.6.5",
+        "mongoose": "5.7.5",
         "morgan": "1.9.1",
         "p-queue": "6.0.2",
         "query-string": "6.8.1",
