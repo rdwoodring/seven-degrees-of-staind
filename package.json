@@ -44,7 +44,7 @@
         "@types/query-string": "6.3.0",
         "@types/request": "2.48.1",
         "concurrently": "4.1.0",
-        "jest": "24.7.1",
+        "jest": "24.9.0",
         "mongodb": "3.2.7",
         "nodemon": "1.19.1",
         "ts-jest": "24.1.0",
