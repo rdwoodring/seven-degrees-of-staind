@@ -1,4 +1,5 @@
-import request from 'request';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import querystring from 'querystring';
 import dotenv from 'dotenv';
 import Queue from 'p-queue';
 import fs from 'fs';
@@ -50,31 +51,21 @@ function traverseButtRockGraph(): Promise<void> {
 }
 
 function getAuthorization(): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const encodedAuthString = Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
-            requestOptions = {
-                url: `https://accounts.spotify.com/api/token`,
-                form: {
-                    grant_type: 'client_credentials'
-                },
-                headers: {
-                    'Authorization': `Basic ${encodedAuthString}`
-                }
-            };
-
-        request.post(requestOptions, (error: any, response: any, body: any) => {
-            if (error) {
-                reject(new Error(error));
+    const url = 'https://accounts.spotify.com/api/token',
+        encodedAuthString = Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
+        config: AxiosRequestConfig = {
+            headers: {
+                'Authorization': `Basic ${encodedAuthString}`
             }
+        },
+        formData = {
+            grant_type: 'client_credentials'
+        };
 
-            const data = JSON.parse(body);
-
-            // console.log(body);
-            // console.log(typeof body);
-            // console.log(body.access_token);
-            resolve(data.access_token);
+    return axios.post(url, querystring.stringify(formData), config)
+        .then((response: AxiosResponse) => {
+            return response.data.access_token;
         });
-    });
 }
 
 function getRelated(pathFromStaind: string[], id: string, accessToken: string): Promise<void> {
@@ -84,40 +75,42 @@ function getRelated(pathFromStaind: string[], id: string, accessToken: string): 
         returnPromise = new Promise((resolve) => {
             setTimeout(() => {
                 relatedArtists[id] = pathFromStaind;
-        
-                const options = {
-                    url: 'https://api.spotify.com/v1/artists/' + id + '/related-artists',
-                    headers: { 'Authorization': 'Bearer ' + accessToken },
-                    json: true
-                };
+
+                const url = `https://api.spotify.com/v1/artists/${id}/related-artists`,
+                    config: AxiosRequestConfig = {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    };
         
                 // // use the access token to access the Spotify Web API
                 console.log(`Fetching related artists for ${id}...`);
                 console.log(`${queue.size} items in the queue...`);
-                request.get(options, function(error: any, response: any, body: any) {
-                    if (error) {
-                        console.log(error);
-                    }
-        
-                    if (!body.artists) {
-                        console.log(body);
-                        console.log(`No related artists for ${id}`);
-                    }
-        
-                    const artists = body.artists || [],
-                        promises = artists.map((artist: any) => {
-                            var path = [...pathFromStaind],
-                                artistId = artist.id;
-        
-                            path.push(artistId);
-        
-                            return queue.add(() => {
-                                return getRelated(path, artistId, accessToken)
+
+                axios.get(url, config)
+                    .then((response: AxiosResponse) => {
+                        if (!response.data.artists) {
+                            console.log(response.data);
+                            console.log(`No related artists for ${id}`);
+                        }
+            
+                        const artists = response.data.artists || [],
+                            promises = artists.map((artist: any) => {
+                                var path = [...pathFromStaind],
+                                    artistId = artist.id;
+            
+                                path.push(artistId);
+            
+                                return queue.add(() => {
+                                    return getRelated(path, artistId, accessToken)
+                                });
                             });
-                        });
-        
-                    resolve();
-                })
+            
+                        resolve();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             }, 3000);
         });
     }

@@ -4,21 +4,17 @@ import {
     NextFunction
 } from 'express';
 
-// import {SessionData} from 'express-session';
-
-import session from 'express-session';
-
-// import * as requestDependency from 'request';
-
 import tokenRefresher from './tokenRefresher';
-// import { request } from 'http';
-import request from 'request';
-import { token } from 'morgan';
+
+import axios from 'axios';
+
+import querystring from 'querystring';
 
 let req: Request,
     res: Response,
     next: NextFunction,
     nextPromise: Promise<void>,
+    mockStringify: jest.SpyInstance,
     mockPost: jest.SpyInstance;
 
 beforeEach(() => {
@@ -30,15 +26,24 @@ beforeEach(() => {
         session: {}
     } as Request;
 
-    res = {} as Response;
+    res = {
+        clearCookie: jest.fn()
+    } as unknown as Response;
 
     next = jest.fn(() => {
         return nextPromise;
     }) as NextFunction;
 
-    mockPost = jest.spyOn(request, 'post');
+    mockPost = jest.spyOn(axios, 'post');
     mockPost.mockImplementation(() => {
         return Promise.resolve({});
+    });
+
+    mockStringify = jest.spyOn(querystring, 'stringify');
+    mockStringify.mockImplementation(() => {
+        return {
+            thisis: 'somefakedata'
+        }
     });
 });
 
@@ -48,7 +53,7 @@ afterEach(() => {
 
 describe('when called', () => {
     describe('when the request\'s session does not have an accessTokenExpiry property', () => {
-        it('should not call the post method of the request module', () => {
+        it('should not call the post method of the axios module', () => {
             tokenRefresher(req, res, next);
 
             return nextPromise.then(() => {
@@ -58,6 +63,8 @@ describe('when called', () => {
         
         it('should call the next function', () => {
             tokenRefresher(req, res, next);
+
+            expect(next).toHaveBeenCalled();
         });
     });
     
@@ -74,14 +81,27 @@ describe('when called', () => {
         });
     
         describe('when the accessTokenExpiry is less than the current date', () => {
-            it('should call the post method of the request module', () => {
+            it('should call the post method of the axios module', () => {
                 tokenRefresher(req, res, next);
     
                 expect(mockPost).toHaveBeenCalled();
             });
-            
-            it('should call the next function', () => {
+
+            it('should call the stringify method of the querystring module', () => {
                 tokenRefresher(req, res, next);
+
+                expect(mockStringify).toHaveBeenCalled();
+            });
+
+            describe('when calling the stringify method', () => {
+                it('should pass a form data object with a grant_type and a refresh_token', () => {
+                    tokenRefresher(req, res, next);
+
+                    expect(mockStringify).toHaveBeenCalledWith({
+                        grant_type: 'refresh_token',
+                        refresh_token: 'aaabbbccc'
+                    });
+                });
             });
 
             describe('when calling the post method of the request module', () => {
@@ -93,17 +113,15 @@ describe('when called', () => {
                 it('should pass an authorization object', () => {
                     tokenRefresher(req, res, next);
 
-                    expect(mockPost.mock.calls[0][0]).toEqual({
-                        url: 'https://accounts.spotify.com/api/token',
-                        headers: {
-                            'Authorization': `Basic ${Buffer.from('joker:riddler').toString('base64')}`
+                    expect(mockPost).toHaveBeenCalledWith('https://accounts.spotify.com/api/token', {
+                            thisis: 'somefakedata'
                         },
-                        form: {
-                            grant_type: 'refresh_token',
-                            refresh_token: 'aaabbbccc'
-                        },
-                        json: true
-                    });
+                        {
+                            headers: {
+                                'Authorization': `Basic ${Buffer.from('joker:riddler').toString('base64')}`,
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        });
                 });
             });
 
@@ -128,46 +146,47 @@ describe('when called', () => {
                             return 3000;
                         });
 
-                        mockPost.mockImplementation((opts, cb) => {
-                            cb(null, {
-                                statusCode: 200
-                            }, {
-                                access_token: 'dddeeefff',
-                                expires_in: 10
+                        mockPost.mockImplementation(() => {
+                            return Promise.resolve({
+                                data: {
+                                    access_token: 'dddeeefff',
+                                    expires_in: 10
+                                }
                             });
                         });
                     });
 
                     it('should set the session.accessToken to the body\'s access_token', () => {
-                        tokenRefresher(req, res, next);
-
-                        expect(req.session!.accessToken).toEqual('dddeeefff');
+                        return tokenRefresher(req, res, next).then(() => {
+                            expect(req.session!.accessToken).toEqual('dddeeefff');
+                        });
                     });
 
                     it('should set the session.accessTokenExpiry to body\'s expires_in plus date.now times 1000', () => {
-                        tokenRefresher(req, res, next);
+                        return tokenRefresher(req, res, next).then(() => {
+                            return expect(req.session!.accessTokenExpiry).toEqual(3000 + 10 * 1000);
+                        });
 
-                        return expect(req.session!.accessTokenExpiry).toEqual(3000 + 10 * 1000);
                     });
 
                     it('should call the response\'s cookie method', () => {
-                        tokenRefresher(req, res, next);
-
-                        return expect(res.cookie).toHaveBeenCalled();
+                        return tokenRefresher(req, res, next).then(() => {
+                            return expect(res.cookie).toHaveBeenCalled();
+                        });
                     });
 
                     it('should call the next method', () => {
-                        tokenRefresher(req, res, next);
-
-                        expect(next).toHaveBeenCalled();
+                        return tokenRefresher(req, res, next).then(() => {
+                            expect(next).toHaveBeenCalled();
+                        });
                     });
 
                     describe('when calling the cookie method', () => {
                         it('should pass loggedIn and true', () => {
-                            tokenRefresher(req, res, next);
-
-                            return expect(res.cookie).toHaveBeenCalledWith('loggedIn', true);
-                        })
+                            return tokenRefresher(req, res, next).then(() => {
+                                return expect(res.cookie).toHaveBeenCalledWith('loggedIn', true);
+                            });
+                        });
                     });
                 });
 
@@ -182,64 +201,55 @@ describe('when called', () => {
                             }
                         } as any;
 
-                        mockPost.mockImplementation((opts, cb) => {
-                            cb('error');
+                        mockPost.mockImplementation(() => {
+                            return Promise.reject('error');
                         });
                     });
                     
                     it('should delete the request.session.accessToken', () => {
-                        tokenRefresher(req, res, next);
-
-                        return nextPromise.then(() => {
+                        return tokenRefresher(req, res, next).then(() => {
                             expect(req.session!.accessToken).not.toBeDefined();
                         });
                     });
                     
                     it('should delete the request.session.accessTokenExpiry', () => {
-                        tokenRefresher(req, res, next);
-
-                        return nextPromise.then(() => {
+                        return tokenRefresher(req, res, next).then(() => {
                             expect(req.session!.accessTokenExpiry).not.toBeDefined();
                         });
                     });
                     
                     it('should delete the request.session.refreshToken', () => {
-                        tokenRefresher(req, res, next);
-
-                        return nextPromise.then(() => {
+                        return tokenRefresher(req, res, next).then(() => {
                             expect(req.session!.refreshToken).not.toBeDefined();
                         });
                     });
                     
                     it('should call the clearCookie method', () => {
-                        tokenRefresher(req, res, next);
-
-                        return nextPromise.then(() => {
-                            expect(req.clearCookie).toHaveBeenCalled();
+                        return tokenRefresher(req, res, next).then(() => {
+                            expect(res.clearCookie).toHaveBeenCalled();
                         });
                     });
 
                     it('should call the next function', () => {
-                        tokenRefresher(req, res, next);
+                        return tokenRefresher(req, res, next).then(() => {
+                            expect(next).toHaveBeenCalled();
+                        });
 
-                        expect(next).toHaveBeenCalled();
                     });
 
                     describe('when calling the claerCookie method', () => {
                         it('should pass loggedIn as the argument', () => {
-                            tokenRefresher(req, res, next);
-
-                            return nextPromise.then(() => {
-                                expect(req.clearCookie).toHaveBeenCalledWith('loggedIn');
+                            return tokenRefresher(req, res, next).then(() => {
+                                expect(res.clearCookie).toHaveBeenCalledWith('loggedIn');
                             }); 
                         });
                     });
 
                     describe('when calling the next function', () => {
                         it('should pass along the error argument it received from the post call', () => {
-                            tokenRefresher(req, res, next);
-
-                            expect(next).toHaveBeenCalledWith('error');
+                            return tokenRefresher(req, res, next).then(() => {
+                                expect(next).toHaveBeenCalledWith('error');
+                            });
                         });
                     });
                 });
