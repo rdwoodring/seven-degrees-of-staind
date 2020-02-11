@@ -143,10 +143,12 @@ describe('when called', () => {
                         mockIn = jest.fn(() => {
                             return Promise.resolve([
                                 {
-                                    id: 'aaa'
+                                    id: 'aaa',
+                                    pathFromStaind: ['trapt', 'nickelback', 'aaa']
                                 },
                                 {
-                                    id: 'bob ross'
+                                    id: 'bob ross',
+                                    pathFromStaind: ['linkin park', 'bob ross']
                                 }
                             ])
                         });
@@ -171,11 +173,13 @@ describe('when called', () => {
                                     items: [
                                         {
                                             id: 'aaa',
-                                            isbuttrock: true
+                                            isbuttrock: true,
+                                            stepsAwayFromStaind: 3
                                         },
                                         {
                                             id: 'bbb',
-                                            isbuttrock: false
+                                            isbuttrock: false,
+                                            stepsAwayFromStaind: null
                                         }
                                     ]
                                 }
