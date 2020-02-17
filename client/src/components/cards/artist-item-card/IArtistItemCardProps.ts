@@ -15,6 +15,7 @@ export default interface IArtistItemCardProps {
         width: number
     }[]
     isbuttrock: Boolean
+    stepsAwayFromStaind: number | null
     name: string
     popularity: number
     type: string

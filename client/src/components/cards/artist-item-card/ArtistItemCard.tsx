@@ -53,11 +53,14 @@ class ArtistItemCard extends React.PureComponent<IArtistItemCardProps & WithStyl
                         <Typography variant="h5" component="h2">
                             {this.props.name}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
+                        <Typography variant="body2" color="textSecondary" gutterBottom>
                             Popularity: {this.props.popularity} &bull; Followers: {this.props.followers.total}
                         </Typography>
+                        <Typography variant="body1">
+                                Distance from Staind: {this.props.isbuttrock ? this.props.stepsAwayFromStaind: 'N/A'}
+                        </Typography>
                         <Typography variant="body1" gutterBottom>
-                            But are they Butt Rock? ...{this.props.isbuttrock ? 'Oh Yeah' : 'Nah'}
+                            {this.generateButtRockClassification()}
                         </Typography>
                     </CardContent>
                 </Box>
@@ -84,6 +87,22 @@ class ArtistItemCard extends React.PureComponent<IArtistItemCardProps & WithStyl
         }
 
         return markup;
+    }
+
+    private generateButtRockClassification() {
+        const stepsAwayFromStaind = this.props.stepsAwayFromStaind;
+
+        if (stepsAwayFromStaind === null) {
+            return `${this.props.name} isn't butt rock.`;
+        } else if (stepsAwayFromStaind === 0) {
+            return `${this.props.name} is the epicenter of butt rock.`;
+        } else if (stepsAwayFromStaind > 0 && stepsAwayFromStaind <= 2) {
+            return `${this.props.name} is quintessential butt rock.`;
+        } else if (stepsAwayFromStaind > 2 && stepsAwayFromStaind <= 4) {
+            return `Meh, ${this.props.name} is borderline butt rock.`;
+        } else if (stepsAwayFromStaind > 4 && stepsAwayFromStaind <= 6) {
+            return `${this.props.name} is, like, butt rock's third cousin, twice removed.`;
+        }
     }
 }
 
