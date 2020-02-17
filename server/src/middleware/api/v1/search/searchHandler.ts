@@ -9,6 +9,7 @@ import axios, {
     AxiosRequestConfig
 } from 'axios';
 
+import IRelatedArtist from '../../../../database/schemas/IRelatedArtist';
 import RelatedArtist from '../../../../database/models/RelatedArtist';
 
 const searchGetHandler = function(req: Request, res: Response, next: NextFunction) {
@@ -35,9 +36,9 @@ const searchGetHandler = function(req: Request, res: Response, next: NextFunctio
                 return RelatedArtist.find()
                     .where('_id')
                     .in(ids)
-                    .then((relatedArtists) => {
+                    .then((relatedArtists: IRelatedArtist[]) => {
                         return relatedArtists.reduce<{
-                            [id: string]: Object
+                            [id: string]: IRelatedArtist
                         }>((accumulator, relatedArtist) => {
                             return {
                                 ...accumulator,
@@ -49,18 +50,24 @@ const searchGetHandler = function(req: Request, res: Response, next: NextFunctio
                         const artists = response.data.artists
                             .items
                             .map((artist: any)  => {
-                                let isButtRock;
+                                const relatedArtist: IRelatedArtist = relatedArtistsHashMap[artist.id];
+
+                                let isButtRock,
+                                    stepsAwayFromStaind;
 
                                 if (relatedArtistsHashMap[artist.id]) {
                                     isButtRock = true;
+                                    stepsAwayFromStaind = relatedArtist.pathFromStaind.length;
                                 }
                                 else {
                                     isButtRock = false;
+                                    stepsAwayFromStaind = null;
                                 }
 
                                 return {
                                     ...artist,
-                                    isbuttrock: isButtRock
+                                    isbuttrock: isButtRock,
+                                    stepsAwayFromStaind: stepsAwayFromStaind
                                 };
                             });
 
