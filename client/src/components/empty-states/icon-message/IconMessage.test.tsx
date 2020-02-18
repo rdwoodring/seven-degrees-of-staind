@@ -40,5 +40,5 @@ describe('render', () => {
         const wrapper = shallow(<IconMessage {...data} />);
 
         expect(wrapper.html()).toContain('bitching cool message');
-    })
+    });
 });
