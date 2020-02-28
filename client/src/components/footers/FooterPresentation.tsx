@@ -18,7 +18,7 @@ class FooterPresentation extends React.Component {
                         </Typography>
                     </Box>
                     <Box height="32px">
-                        <Link href="https://github.com/rdwoodring/seven-degrees-of-staind">
+                        <Link href="https://github.com/rdwoodring/seven-degrees-of-staind" target="_blank" rel="noopener">
                             <img src={githubLogo} />
                         </Link>
                     </Box>
