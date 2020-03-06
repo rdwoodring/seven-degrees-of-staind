@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 
+import DocumentTitle from 'react-document-title';
+
 import Navbar from './components/navbar/Navbar';
 
 import Footer from './components/footers/Footer';
@@ -29,18 +31,30 @@ class App extends React.Component {
                             <Switch>
                                 <Route exact path="/" render={() => {
                                     return (
-                                        <Home />
+                                        <DocumentTitle title={`Seven Degrees of Staind - Home`}>
+                                            <Home />
+                                        </DocumentTitle>
                                     );
                                 }} />
-                                <Route exact path="/search" component={WrappedSearch} />
+                                <Route exact path="/search" render={() => {
+                                    return (
+                                        <DocumentTitle title={`Seven Degrees of Staind - Search`}>
+                                            <WrappedSearch />
+                                        </DocumentTitle>
+                                    );
+                                }} />
                                 <Route exact path="/403" render={() => {
                                     return (
-                                        <FourOhThree />
+                                        <DocumentTitle title={`Seven Degrees of Staind - Permission Denied`}>
+                                            <FourOhThree />
+                                        </DocumentTitle>
                                     );
                                 }} />
                                 <Route exact path="/404" render={() => {
                                     return (
-                                        <FourOhFour />
+                                        <DocumentTitle title={`Seven Degrees of Staind - Page Not Found`}>
+                                            <FourOhFour />
+                                        </DocumentTitle>
                                     );
                                 }} />
                                 <Route path="*" render={() => {
