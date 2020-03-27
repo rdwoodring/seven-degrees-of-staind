@@ -1,4 +1,9 @@
 [![CircleCI](https://circleci.com/gh/rdwoodring/seven-degrees-of-staind/tree/master.svg?style=svg)](https://circleci.com/gh/rdwoodring/seven-degrees-of-staind/tree/master)
+[![GitHub license](https://img.shields.io/github/license/rdwoodring/seven-degrees-of-staind)](https://github.com/rdwoodring/seven-degrees-of-staind/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/rdwoodring/seven-degrees-of-staind)](https://GitHub.com/rdwoodring/seven-degrees-of-staind/releases/)
+[![GitHub contributors](https://img.shields.io/github/contributors/rdwoodring/seven-degrees-of-staind)](https://GitHub.com/rdwoodring/seven-degrees-of-staind/graphs/contributors/)
+
+
 # Seven Degrees of Staind (Butt Rock Classifier)
 
 At work, we got tired of arguing over which bands were or were not [butt rock](https://www.urbandictionary.com/define.php?term=Butt%20Rock), so we wanted an objective way to make the determination. Everyone could agree that Staind was the epicenter of butt rock, so this app uses Spotify's Related Artist API to build a tree of related artists seven degrees out from Staind to classify what's butt rock.
@@ -46,14 +51,26 @@ There are two ways you can get some butt rock related artists imported into your
 3. Run the `node ./server/dist/scripts/cron/updateButtRockGraph` from the root of your Seven Degrees of Staind project.
 
 ## Deployment
-
-TODO
+1. Clone the code to the production VM
+2. TODO: add node and apache install instructions
+3. TODO: add and enable the site instructions
+4. TODO: add instructions for the .env file
+5. Start mongo by running `mongod --fork --dbpath ~/data/db`
+6. Go to the site directory (var/www/butt-rock.com/html/nodejs)
+7. Install pm2 by running `npm install pm2 -g`
+8. Run `sudo pm2 start bin/www --watch --name butt-rock`
+9. Run `sudo pm2 startup`
+10. Copy and paste the output of the startup command and run it
+11. Run `sudo pm2 save` to complete the process of daemonizing the app
 
 ## Built With
 
 * [Node.js](https://nodejs.org/) - Web framework
 * [NPM](https://www.npmjs.com/) - Dependency Management
-* [TypeScript](https://www.typescriptlang.org/)
+* [TypeScript](https://www.typescriptlang.org/) - JavaScript... but with type safety!
+* [React](https://www.reactjs.org) - Fast and straightforward UI library
+* [MaterialUI](https://material-ui.com/) - UI components library
+* [Express](https://expressjs.com/) - Server framework
 * [MongoDB](https://www.mongodb.com/) - Persistent server-side storage
 
 ## Contributing
@@ -62,7 +79,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-TODO 
+This project adheres to [semantic versioning](https://semver.org/). 
 
 ## Authors
 
