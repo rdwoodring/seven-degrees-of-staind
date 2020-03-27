@@ -1,50 +1,44 @@
 import {
-    Router,
     Request,
     Response,
     NextFunction
 } from 'express';
 
-import request from 'request';
+import axios, {
+    AxiosResponse,
+    AxiosRequestConfig
+} from 'axios';
 
+import IRelatedArtist from '../../../../database/schemas/IRelatedArtist';
 import RelatedArtist from '../../../../database/models/RelatedArtist';
 
 const searchGetHandler = function(req: Request, res: Response, next: NextFunction) {
-    const options = {
-        url: 'https://api.spotify.com/v1/search?q=' + req.query.artist + '&type=artist&market=US&limit=10',
-        headers: {'Authorization': 'Bearer ' + req.session!.accessToken},
-        json: true
-    };
+    const url = `https://api.spotify.com/v1/search?q=${req.query.artist}&type=artist&market=US&limit=10`,
+        config: AxiosRequestConfig = {
+            headers: {
+                'Authorization': 'Bearer ' + req.session!.accessToken
+            }
+        };
 
-    request.get(options, function(error: any, response: any, body: any) {
-        if (error) {
-            const err = new Error('Bad Request');
-            res.status(404);
+    return axios.get(url, config)
+        .then((response: AxiosResponse) => {
+            let returnData;
             
-            next(err);
+            // TODO: bump TypeScript and replace this with optional chaining
+            if (response.data && response.data.artists && response.data.artists.items) {
+                const ids = response.data
+                    .artists
+                    .items
+                    .map((artist: any) => {
+                        return artist.id;
+                    });
 
-            // woof, this is kind of a lame concession to how
-            // awkward this is to unit test since
-            // half of it is synchronous (or at least callback
-            // driven which can be made mock synchronous in test)
-            // TODO: resolve at least some of this by replacing
-            // request here with axios or something more elegant
-            return Promise.resolve();
-        }
-        else {
-            let returnPromise;
-
-            if (body && body.artists && body.artists.items) {
-                const ids = body.artists.items.map((artist: any) => {
-                    return artist.id;
-                });
-
-                returnPromise = RelatedArtist.find()
+                return RelatedArtist.find()
                     .where('_id')
                     .in(ids)
-                    .then((relatedArtists) => {
+                    .then((relatedArtists: IRelatedArtist[]) => {
                         return relatedArtists.reduce<{
-                            [id: string]: Object
+                            [id: string]: IRelatedArtist
                         }>((accumulator, relatedArtist) => {
                             return {
                                 ...accumulator,
@@ -53,47 +47,55 @@ const searchGetHandler = function(req: Request, res: Response, next: NextFunctio
                         }, {});
                     })
                     .then((relatedArtistsHashMap) => {
-                        const artists = body.artists
+                        const artists = response.data.artists
                             .items
                             .map((artist: any)  => {
-                                let isButtRock;
+                                const relatedArtist: IRelatedArtist = relatedArtistsHashMap[artist.id];
+
+                                let isButtRock,
+                                    stepsAwayFromStaind;
 
                                 if (relatedArtistsHashMap[artist.id]) {
                                     isButtRock = true;
+                                    stepsAwayFromStaind = relatedArtist.pathFromStaind.length;
                                 }
                                 else {
                                     isButtRock = false;
+                                    stepsAwayFromStaind = null;
                                 }
 
                                 return {
                                     ...artist,
-                                    isbuttrock: isButtRock
+                                    isbuttrock: isButtRock,
+                                    stepsAwayFromStaind: stepsAwayFromStaind
                                 };
                             });
 
-                        return {
-                            ...body,
-                            artists: {
-                                ...body.artists,
-                                items: artists
-                            }
-                        };
-                    });
-            }
-            else {
-                // fudge... bad request maybe
-                returnPromise = Promise.resolve({
+                            res.json({
+                                ...response.data,
+                                artists: {
+                                    ...response.data.artists,
+                                    items: artists
+                                }
+                            });
+                        });
+            } else {
+                res.json({
                     artists: {
                         items: []
                     }
                 });
+
+                return;
             }
-            
-            return returnPromise.then((body) => {
-                res.json(body);
-            });
-        }
-    });
+        })
+        .catch((response: AxiosResponse) => {
+            const err = new Error('Bad Request');
+
+            res.status(404);
+
+            next(err);
+        });   
 }
 
 export {

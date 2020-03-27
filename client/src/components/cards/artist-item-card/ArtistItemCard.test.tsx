@@ -1,5 +1,5 @@
 import React from 'react';
-import { configure, shallow } from 'enzyme';
+import { configure, shallow, render } from 'enzyme';
 
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -27,6 +27,7 @@ const getDefaultData = (): IArtistItemCardProps => {
         id: '1234',
         images: [],
         isbuttrock: true,
+        stepsAwayFromStaind: 3,
         name: 'Fake Artist',
         popularity: 0,
         type: 'cool',

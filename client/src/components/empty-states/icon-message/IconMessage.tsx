@@ -12,7 +12,7 @@ export default class IconMessage extends React.PureComponent<IIconMessageProps> 
         return (
             <Box textAlign="center" p={2}>
                 <Typography variant="h1" component="h3">
-                    <Icon color="disabled" fontSize="inherit" aria />
+                    <Icon color="disabled" fontSize="inherit" />
                 </Typography>
                 <Typography variant="h5" component="h2">
                     {this.props.message}
