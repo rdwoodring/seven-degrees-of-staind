@@ -54,14 +54,17 @@ There are two ways you can get some butt rock related artists imported into your
 1. Clone the code to the production VM
 2. TODO: add node and apache install instructions
 3. TODO: add and enable the site instructions
-4. TODO: add instructions for the .env file
-5. Start mongo by running `mongod --fork --dbpath ~/data/db`
-6. Go to the site directory (var/www/butt-rock.com/html/nodejs)
-7. Install pm2 by running `npm install pm2 -g`
-8. Run `sudo pm2 start bin/www --watch --name butt-rock`
-9. Run `sudo pm2 startup`
-10. Copy and paste the output of the startup command and run it
-11. Run `sudo pm2 save` to complete the process of daemonizing the app
+4. Add CLIENT_ID=your_spotify_app_client_id to your .env file
+5. Add CLIENT_SECRET=your_spotify_app_client_secret to your .env file
+6. Add SESSION_SECRET=a_strong_random_string to your .env file
+7. Add DB_CONN_STRING=my_db_connection_string to your .env file. If you installed MongoDB locally, the connection string will look something like this: `mongodb://localhost:1234/my-seven-degrees-of-staind-prod-db-cluster`
+8. Start mongo by running `mongod --fork --dbpath ~/data/db`
+9. Go to the site directory (var/www/butt-rock.com/html/nodejs)
+10. Install pm2 by running `npm install pm2 -g`
+11. Run `sudo pm2 start bin/www --watch --name butt-rock`
+12. Run `sudo pm2 startup`
+13. Copy and paste the output of the startup command and run it
+14. Run `sudo pm2 save` to complete the process of daemonizing the app
 
 ## Built With
 
