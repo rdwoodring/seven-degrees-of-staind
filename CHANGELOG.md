@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
  
 This project adheres to [Semantic Versioning](http://semver.org/).
+
+
+ 
+## [[1.1.0]](https://github.com/rdwoodring/seven-degrees-of-staind/releases/tag/v1.1.0) - 2020-04-14
+ 
+### Features
+  - [#17](https://github.com/rdwoodring/seven-degrees-of-staind/issues/17)
+  Swap the request module out for Axios for requests being proxied from the server to the Spotify API.
+  - [#123](https://github.com/rdwoodring/seven-degrees-of-staind/issues/123), [#124](https://github.com/rdwoodring/seven-degrees-of-staind/issues/124)  Update the search API to include the number of nodes between Staind and the current artist. Update the UI to render a specific message based on the artist's distance from Staind.
+  - [#125](https://github.com/rdwoodring/seven-degrees-of-staind/issues/125)
+  Add a footer with copyright date and Github badge linking to the project.
+ 
+### Fixes
+ 
+- [#116](https://github.com/rdwoodring/seven-degrees-of-staind/issues/116)
+  Pull in [react-document-title](https://www.npmjs.com/package/react-document-title) to update the page title on navigation to various routes.
+- [#119](https://github.com/rdwoodring/seven-degrees-of-staind/issues/119)
+  Utilize the generated service worker when the app is loaded over HTTPS.
+- [#129](https://github.com/rdwoodring/seven-degrees-of-staind/issues/129)
+  Replace `new Buffer()` with `Buffer.from()` in login.ts.
+- [#131](https://github.com/rdwoodring/seven-degrees-of-staind/issues/131)
+  Remove an unused aria attribute where an icon was just cosmetic and had no semantic meaning.
  
 ## [[1.0.2]](https://github.com/rdwoodring/seven-degrees-of-staind/releases/tag/v1.0.2) - 2020-01-30
  
