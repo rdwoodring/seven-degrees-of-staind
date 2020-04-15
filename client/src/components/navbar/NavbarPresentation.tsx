@@ -19,9 +19,9 @@ const styles = createStyles({
     },
     'nav-bar': {
         width: '100%',
-        boxSizing: 'border-box',
+        // boxSizing: 'border-box',
         padding: '0 15px',
-        maxWidth: '1000px' ,
+        maxWidth: '970px' ,
         margin: '0 auto' 
     },
     'toolbar': {

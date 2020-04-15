@@ -1,8 +1,11 @@
 import React from 'react';
 import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
-import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
+
+import DocumentTitle from 'react-document-title';
 
 import Navbar from './components/navbar/Navbar';
+
+import Footer from './components/footers/Footer';
 
 import Home from './pages/home/Home';
 import Search from './pages/search/Search';
@@ -12,53 +15,65 @@ import FourOhFour from './pages/404/FourOhFour';
 import withIsLoggedIn from './HOCs/withIsLoggedIn/withIsLoggedIn';
 import withMustBeLoggedInToView from './HOCs/withMustBeLoggedInToView/withMustBeLoggedInToView';
 
-const WrappedSearch = withIsLoggedIn(withMustBeLoggedInToView(Search)),
-    WrappedNavbar = withIsLoggedIn(Navbar),
-    styles = createStyles({
-        'app-body-wrapper': {
-            boxSizing: 'border-box',
-            padding: '0 15px',
-            maxWidth: '1000px',
-            margin: '0 auto 15px auto'
-        }
-    });
+import Box from '@material-ui/core/Box';
 
-class App extends React.Component<WithStyles<typeof styles>> {
+const WrappedSearch = withIsLoggedIn(withMustBeLoggedInToView(Search)),
+    WrappedNavbar = withIsLoggedIn(Navbar);
+
+class App extends React.Component {
     render() {
-        const { classes } = this.props;
         return (
             <>
                 <BrowserRouter>
                     <WrappedNavbar />
-                    <div className={classes['app-body-wrapper']}>
-                        <Switch>
-                            <Route exact path="/" render={() => {
-                                return (
-                                    <Home />
-                                );
-                            }} />
-                            <Route exact path="/search" component={WrappedSearch} />
-                            <Route exact path="/403" render={() => {
-                                return (
-                                    <FourOhThree />
-                                );
-                            }} />
-                            <Route exact path="/404" render={() => {
-                                return (
-                                    <FourOhFour />
-                                );
-                            }} />
-                            <Route path="*" render={() => {
-                                return (
-                                    <Redirect to="/404" />
-                                );
-                            }} />
-                        </Switch>
-                    </div>
+                    <Box display="flex" maxWidth="970px" flexDirection="column" flex="1 0 0%" margin="0 auto 15px auto" width="calc(100% - 30px)">
+                        <Box width="100%">
+                            <Switch>
+                                <Route exact path="/" render={() => {
+                                    return (
+                                        <DocumentTitle title={`Seven Degrees of Staind - Home`}>
+                                            <Home />
+                                        </DocumentTitle>
+                                    );
+                                }} />
+                                <Route exact path="/search" render={() => {
+                                    return (
+                                        <DocumentTitle title={`Seven Degrees of Staind - Search`}>
+                                            <WrappedSearch />
+                                        </DocumentTitle>
+                                    );
+                                }} />
+                                <Route exact path="/403" render={() => {
+                                    return (
+                                        <DocumentTitle title={`Seven Degrees of Staind - Permission Denied`}>
+                                            <FourOhThree />
+                                        </DocumentTitle>
+                                    );
+                                }} />
+                                <Route exact path="/404" render={() => {
+                                    return (
+                                        <DocumentTitle title={`Seven Degrees of Staind - Page Not Found`}>
+                                            <FourOhFour />
+                                        </DocumentTitle>
+                                    );
+                                }} />
+                                <Route path="*" render={() => {
+                                    return (
+                                        <Redirect to="/404" />
+                                    );
+                                }} />
+                            </Switch>
+                        </Box>
+                    </Box>
+                    <Footer />
                 </BrowserRouter>
             </>
         );
     }
 }
 
-export default withStyles(styles)(App);
+export default App;
+export {
+    WrappedNavbar,
+    WrappedSearch
+};
