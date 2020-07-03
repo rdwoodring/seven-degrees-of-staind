@@ -9,7 +9,7 @@ let argv = process.argv.slice(2);
 
 argv.push('--config', JSON.stringify({
     "roots": [
-        "server/src"
+        "./src"
     ],
     "transform": {
         "^.+\\.spec\\.tsx?$": "ts-jest",
