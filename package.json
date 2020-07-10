@@ -11,6 +11,12 @@
         "watch-client": "cd client && npm run watch"
     },
     "devDependencies": {
-        "lerna": "3.22.1"
-    }
+        "concurrently": "5.2.0",
+        "nodemon": "2.0.4"
+    },
+    "dependencies": {},
+    "workspaces": [
+        "client",
+        "server"
+    ]
 }

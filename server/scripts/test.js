@@ -11,6 +11,9 @@ argv.push('--config', JSON.stringify({
     "roots": [
         "./src"
     ],
+    "moduleDirectories": [
+        "./node_modules"
+    ],
     "transform": {
         "^.+\\.spec\\.tsx?$": "ts-jest",
         "^.+\\.tsx?$": "ts-jest"
