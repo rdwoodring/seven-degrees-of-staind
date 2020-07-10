@@ -15,8 +15,14 @@
         "nodemon": "2.0.4"
     },
     "dependencies": {},
-    "workspaces": [
-        "client",
-        "server"
-    ]
+    "workspaces": {
+        "nohoist": [
+            "**/jest",
+            "**/jest/**"
+        ],
+        "packages": [
+            "client",
+            "server"
+        ]
+    }
 }
