@@ -16,14 +16,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 You will need to install a copy of [Node.js](https://nodejs.org/en/download/) to run this project. Download the appropriate installer for your system and follow the installation wizard. Note that the project was built using Node 10.15, though it probably should work on later versions and maybe on older versions.
 
-You will also need to have either NPM or Yarn installed. NPM comes packaged with Node.js so you'll get that for free by installing Node.js. If you want to use [Yarn](https://yarnpkg.com/en/docs/install) download the appropriate installer and follow the installation wizard. Yarn should work fine, but note that the project was developed using NPM and the instructions are based on NPM.
+You will also need to have [Yarn](https://yarnpkg.com/en/docs/install) installed, as Seven Degrees of Staind takes advantage of Yarn's workspace feature. Download the appropriate installer and follow the installation wizard.
 
 Finally, you will need an instance of MongoDB. You can probably use one of Mongo's free cloud instances, but the project was developed using a copy of [MongoDB](https://www.mongodb.com/download-center/community) locally. MongoDB is primarily used for secure, server-side storage of session data so that the access token and refresh token returned from Spotify don't have to be stored client-side in something like a cookie.
 
 ### Installing
 
 1. Clone the repository
-2. Install all dependencies in the project root by running `npm install`
+2. Install all dependencies in the project root by running `yarn install`
 3. Create a dotenv file named ".env"
 4. Login to your Spotify account and get an API key
 5. Add CLIENT_ID=your_spotify_app_client_id to your .env file
@@ -31,7 +31,7 @@ Finally, you will need an instance of MongoDB. You can probably use one of Mongo
 7. Add SESSION_SECRET=a_strong_random_string to your .env file
 8. Add DB_CONN_STRING=my_db_connection_string to your .env file. If you installed MongoDB locally, the connection string will look something like this: `mongodb://localhost:1234/my-seven-degrees-of-staind-dev-db-cluster`
 9. Run `mongod --dbpath='path/to/your/data/directory'`
-10. Run `npm run watch` to compile the TypeScript server and client code into JavaScript that Node can run. This command runs the server behind [nodemon](https://www.npmjs.com/package/nodemon) so the server gets restarted on all changes and also ensures that the client code gets re-overlayed on all changes.
+10. Run `yarn run watch` to compile the TypeScript server and client code into JavaScript that Node can run. This command runs the server behind [nodemon](https://www.npmjs.com/package/nodemon) so the server gets restarted on all changes and also ensures that the client code gets re-overlayed on all changes.
 11. [Import the butt rock related artists graph](#importing-butt-rock-artists) into your database
 
 You should now be able to access the app on [localhost:3000](localhost:3000).
@@ -69,7 +69,7 @@ There are two ways you can get some butt rock related artists imported into your
 ## Built With
 
 * [Node.js](https://nodejs.org/) - Web framework
-* [NPM](https://www.npmjs.com/) - Dependency Management
+* [Yarn](https://classic.yarnpkg.com/en/) - Dependency Management
 * [TypeScript](https://www.typescriptlang.org/) - JavaScript... but with type safety!
 * [React](https://www.reactjs.org) - Fast and straightforward UI library
 * [MaterialUI](https://material-ui.com/) - UI components library
