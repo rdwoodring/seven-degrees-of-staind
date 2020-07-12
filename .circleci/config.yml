@@ -31,7 +31,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npm install
+      - run: npm install yarn@latest -g
+      - run: yarn install
 
       - save_cache:
           paths:
@@ -39,7 +40,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm run test
+      - run: cd server && yarn run test
 
   test_client:
     # branches:
@@ -68,7 +69,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: cd client && npm install
+      - run: npm install yarn@latest -g
+      - run: yarn install
 
       - save_cache:
           paths:
@@ -76,7 +78,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: cd client && npm run test
+      - run: cd client && yarn run test
 
 workflows:
   version: 2
