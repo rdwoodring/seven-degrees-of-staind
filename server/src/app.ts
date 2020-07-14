@@ -1,20 +1,3 @@
-// var express = require('express');
-// var path = require(
-//     'path');
-// var favicon = require('serve-favicon');
-// var logger = require('morgan');
-// var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser');
-// var querystring = require('querystring');
-
-// var routes = require('./routes/index');
-// var login = require('./routes/login');
-// var api = require('./routes/api');
-
-// var app = express();
-
-// require('dotenv').config();
-
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -24,6 +7,15 @@ import dotenv from 'dotenv';
 
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
+
+import {
+    Request,
+    Response,
+    NextFunction
+} from 'express';
+
+import IExpressError from './errors/IExpressError';
+import ErrorCodes from './errors/ErrorCodes';
 
 import connect from './database/connect';
 
@@ -75,33 +67,33 @@ app.use(login);
 app.use(api);
 app.use(main);
 
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
+// catch 404 and forward to error handler
+app.use(function(req: Request, res: Response, next: NextFunction) {
+  var err = new Error('Not Found') as IExpressError;
+  err.status = ErrorCodes.NotFound;
+  next(err);
+});
 
-// // error handlers
+// error handlers
 
-// // development error handler
-// // will print stacktrace
-// if (app.get('env') === 'development') {
-//   app.use(function(err, req, res, next) {
-//     res.status(err.status || 500)
-//       .json({
-//         message: err.message,
-//         error: err
-//       });
-//     });
-// }
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err: IExpressError, req: Request, res: Response, next: NextFunction) {
+    res.status(err.status || ErrorCodes.BadRequest)
+      .json({
+        message: err.message,
+        error: err
+      });
+    });
+}
 
-// // production error handler
-// // no stacktraces leaked to user
-// app.use(function(err, req, res, next) {
-//   res.status(err.status || 500)
-//     .send();
-// });
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err: IExpressError, req: Request, res: Response, next: NextFunction) {
+  res.status(err.status || ErrorCodes.BadRequest)
+    .send();
+});
 
 
 // module.exports = app;
