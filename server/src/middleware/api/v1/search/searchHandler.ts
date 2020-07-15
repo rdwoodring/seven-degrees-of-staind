@@ -11,6 +11,8 @@ import axios, {
 
 import IRelatedArtist from '../../../../database/schemas/IRelatedArtist';
 import RelatedArtist from '../../../../database/models/RelatedArtist';
+import IExpressError from '../../../../errors/IExpressError';
+import ErrorCodes from '../../../../errors/ErrorCodes';
 
 const searchGetHandler = function(req: Request, res: Response, next: NextFunction) {
     const url = `https://api.spotify.com/v1/search?q=${req.query.artist}&type=artist&market=US&limit=10`,
@@ -90,9 +92,8 @@ const searchGetHandler = function(req: Request, res: Response, next: NextFunctio
             }
         })
         .catch((response: AxiosResponse) => {
-            const err = new Error('Bad Request');
-
-            res.status(404);
+            const err = new Error('Bad Request') as IExpressError;
+            err.status = ErrorCodes.BadRequest;
 
             next(err);
         });   

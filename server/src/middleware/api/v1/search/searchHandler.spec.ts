@@ -9,6 +9,8 @@ import {searchGetHandler} from './searchHandler';
 import axios from 'axios';
 
 import RelatedArtist from '../../../../database/models/RelatedArtist';
+import { iteratee } from 'lodash';
+import ErrorCodes from '../../../../errors/ErrorCodes';
 
 let req: Request,
     res: Response,
@@ -84,26 +86,26 @@ describe('when called', () => {
                 });
             });
 
-            it('should call the res status method', () => {
-                return searchGetHandler(req, res, next).finally(() => {
-                    return expect(res.status).toHaveBeenCalled();
-                });
-            });
-
             describe('when calling next', () => {
                 it('should pass an Error', () => {
+                    expect.assertions(1);
+
                     return searchGetHandler(req, res, next).finally(() => {
                         return expect((next as any).mock.calls[0][0]).toBeInstanceOf(Error);
                     });
                 });
-            });
 
-            describe('when calling status', () => {
-                it('should pass 404', () => {
-                    return searchGetHandler(req, res, next).finally(() => {
-                        return expect(res.status).toHaveBeenCalledWith(404);
-                    });
-                });
+                describe('when passing an Error', () => {
+                    it('should have a status of 404', () => {
+                        expect.assertions(1);
+
+                        return searchGetHandler(req, res, next).finally(() => {
+                            return expect((next as any)).toHaveBeenCalledWith(expect.objectContaining({
+                                status: ErrorCodes.BadRequest
+                            }));
+                        }); 
+                    })
+                })
             });
         });
 
