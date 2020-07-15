@@ -4,21 +4,19 @@ import {
     NextFunction
 } from 'express';
 
+import IExpressError from '../../errors/IExpressError';
+import ErrorCodes from '../../errors/ErrorCodes';
+
 export default function accessChecker(req: Request, res: Response, next: NextFunction) {
     const accessToken: string = req.session!.accessToken;
 
-        let err: Error | undefined;
-
     if (!accessToken) {
-        err = new Error('Access Denied');
+        const err = new Error('Session does not have an access token') as IExpressError;
 
-        res.status(403)
+        err.status = ErrorCodes.Forbidden;
+
+        throw err;
     }
 
-    if (err) {
-        res.send(err)
-    }
-    else {
-        next();
-    }
+    next();
 }

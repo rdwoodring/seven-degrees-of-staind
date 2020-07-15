@@ -32,39 +32,11 @@ beforeEach(() => {
 
 describe('when called', () => {
     describe('when the request\'s session does not have an accessTokenExpiry property', () => {
-        it('should not call the next function', () => {
-            accessChecker(req, res, next);
-
-            expect(next).not.toHaveBeenCalled();
-        });
-
-        it('should call the res status method', () => {
-            accessChecker(req, res, next);
-
-            expect(res.status).toHaveBeenCalled();
-        });
-
-        it('should call the res send method', () => {
-            accessChecker(req, res, next);
-
-            expect(res.send).toHaveBeenCalled();
-        });
-
-        describe('when calling the status method', () => {
-            it('should pass 403', () => {
+        it('should throw an error', () => {
+            expect(() => {
                 accessChecker(req, res, next);
-
-                expect(res.status).toHaveBeenCalledWith(403);
-            });
+            }).toThrow();
         });
-
-        describe('when calling the send method', () => {
-            it('should send an Error', () => {
-                accessChecker(req, res, next);
-
-                expect(res.send).toHaveBeenCalledWith(new Error('Access Denied'));
-            })
-        })
     });
 
     describe('when the request\'s session does have an accessToken', () => {
