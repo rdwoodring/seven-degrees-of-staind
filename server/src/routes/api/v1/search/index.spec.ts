@@ -4,12 +4,11 @@ import {
     NextFunction
 } from 'express';
 
-import {searchGetHandler} from './searchHandler';
+import {searchGetHandler} from '.';
 
 import axios from 'axios';
 
 import RelatedArtist from '../../../../database/models/RelatedArtist';
-import { iteratee } from 'lodash';
 import ErrorCodes from '../../../../errors/ErrorCodes';
 
 let req: Request,

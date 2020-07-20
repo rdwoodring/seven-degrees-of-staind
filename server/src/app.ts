@@ -21,9 +21,9 @@ import connect from './database/connect';
 
 import tokenRefresher from './middleware/token-refreshers/tokenRefresher';
 
-import main from './routes/index';
-import login from './routes/login';
-import api from './routes/api';
+import main from './routes/main/';
+import login from './routes/login/';
+import api from './routes/api/';
 
 dotenv.config();
 
