@@ -6,7 +6,7 @@
         "test": "cd server && yarn run test && cd ../client && yarn run test",
         "start": "node ./bin/www",
         "build": "cd server && yarn run build && cd ../client && yarn run build && rm ../public/static -rvf && mv build/static ../public/static && mv build/* ../public",
-        "watch-node": "nodemon --watch server/dist ./bin/www",
+        "watch-node": "nodemon --inspect --watch server/dist ./bin/www",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"cd server && yarn run watch\" \"yarn run watch-node\" \"cd client && yarn run watch\"",
         "watch-client": "cd client && yarn run watch"
     },
