@@ -2,10 +2,10 @@ import {handleSearch} from './searchHandler';
 
 import axios, { AxiosResponse } from 'axios';
 
-import IRelatedArtist from '../database/schemas/IRelatedArtist';
-import RelatedArtist from '../database/models/RelatedArtist';
-import IExpressError from '../errors/IExpressError';
-import ErrorCodes from '../errors/ErrorCodes';
+import IRelatedArtist from '../../database/schemas/IRelatedArtist';
+import RelatedArtist from '../../database/models/RelatedArtist';
+import IExpressError from '../../errors/IExpressError';
+import ErrorCodes from '../../errors/ErrorCodes';
 
 let artistName = 'bob ross',
     accessToken = 'happytrees',

@@ -3,16 +3,16 @@ import axios, {
     AxiosRequestConfig
 } from 'axios';
 
-import IRelatedArtist from '../database/schemas/IRelatedArtist';
-import RelatedArtist from '../database/models/RelatedArtist';
+import {
+    buildRequestConfig
+} from '../spotify-config-builders/axiosConfigBuilder';
+
+import IRelatedArtist from '../../database/schemas/IRelatedArtist';
+import RelatedArtist from '../../database/models/RelatedArtist';
 
 const handleSearch = (artistName: string, accessToken: string): Promise<any> => {
         const url = `https://api.spotify.com/v1/search?q=${artistName}&type=artist&market=US&limit=10`,
-            config: AxiosRequestConfig = {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            };
+            config: AxiosRequestConfig = buildRequestConfig(accessToken);
 
             return axios.get(url, config)
             .then((response: AxiosResponse) => {
@@ -47,21 +47,25 @@ const handleSearch = (artistName: string, accessToken: string): Promise<any> => 
                                     const relatedArtist: IRelatedArtist = relatedArtistsHashMap[artist.id];
     
                                     let isButtRock,
-                                        stepsAwayFromStaind;
+                                        stepsAwayFromStaind,
+                                        pathFromStaind;
     
                                     if (relatedArtistsHashMap[artist.id]) {
                                         isButtRock = true;
                                         stepsAwayFromStaind = relatedArtist.pathFromStaind.length;
+                                        pathFromStaind = relatedArtist.pathFromStaind;
                                     }
                                     else {
                                         isButtRock = false;
                                         stepsAwayFromStaind = null;
+                                        pathFromStaind = null;
                                     }
     
                                     return {
                                         ...artist,
                                         isbuttrock: isButtRock,
-                                        stepsAwayFromStaind: stepsAwayFromStaind
+                                        stepsAwayFromStaind: stepsAwayFromStaind,
+                                        pathFromStaind: pathFromStaind
                                     };
                                 });
 
@@ -82,7 +86,7 @@ const handleSearch = (artistName: string, accessToken: string): Promise<any> => 
                 }
             })
             .catch((response: AxiosResponse) => {
-                throw new Error(`Error communicating with Spotify API. Received status ${response.status} code.`);
+            throw new Error(`Error communicating with Spotify API. Received status ${response.status} code.`);
             });
     };
 
