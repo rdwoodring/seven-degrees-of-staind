@@ -10,7 +10,7 @@ import ErrorCodes from '../../../../errors/ErrorCodes';
 
 import {
     handleSearch
-} from '../../../../spotify-api-handlers/searchHandler';
+} from '../../../../spotify/spotify-api-handlers/searchHandler';
 
 const router: Router = Router();
 
