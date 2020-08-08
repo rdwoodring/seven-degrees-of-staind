@@ -139,12 +139,18 @@ describe('when called', () => {
                                     {
                                         id: 'aaa',
                                         isbuttrock: true,
-                                        stepsAwayFromStaind: 3
+                                        stepsAwayFromStaind: 3,
+                                        pathFromStaind: [
+                                            'trapt',
+                                            'nickelback',
+                                            'aaa'
+                                        ]
                                     },
                                     {
                                         id: 'bbb',
                                         isbuttrock: false,
-                                        stepsAwayFromStaind: null
+                                        stepsAwayFromStaind: null,
+                                        pathFromStaind: null
                                     }
                                 ]
                             }
