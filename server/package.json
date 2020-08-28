@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "test": "node scripts/test.js",
+        "test": "node scripts/test.js --colors",
         "start": "node ./bin/www",
         "build": "tsc -p tsconfig.build.json",
         "watch": "tsc -w -p tsconfig.build.json"
