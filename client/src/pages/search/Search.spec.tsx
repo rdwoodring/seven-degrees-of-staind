@@ -91,10 +91,10 @@ describe('componentDidMount', () => {
         });
 
         describe('when calling axios.get', () => {
-            it('should pass /api/v1/search?artist= plus the artist state', () => {
+            it('should pass /api/v1/artists?search= plus the artist state', () => {
                 shallow(<Search {...data} />);
 
-                expect(axios.get).toHaveBeenCalledWith('/api/v1/search?artist=trapt');
+                expect(axios.get).toHaveBeenCalledWith('/api/v1/artists?search=trapt');
             });
         });
 
@@ -342,7 +342,7 @@ describe('handleKeyUpSearchField', () => {
             });
 
             describe('when calling axios.get', () => {
-                it('should pass /api/v1/search?artist= plus the artist state', () => {
+                it('should pass /api/v1/artists?search= plus the artist state', () => {
                     const wrapper = shallow<Search>(<Search {...data} />);
 
                     fakeGet.mockClear();
@@ -353,7 +353,7 @@ describe('handleKeyUpSearchField', () => {
 
                     wrapper.instance().handleKeyUpSearchField(fakeEvent);
 
-                    expect(fakeGet).toHaveBeenCalledWith('/api/v1/search?artist=bob ross');
+                    expect(fakeGet).toHaveBeenCalledWith('/api/v1/artists?search=bob ross');
                 });
             });
 
@@ -465,7 +465,7 @@ describe('handleClickSearchButton', () => {
             });
 
             describe('when calling axios.get', () => {
-                it('should pass /api/v1/search?artist= plus the artist state', () => {
+                it('should pass /api/v1/artists?search= plus the artist state', () => {
                     const wrapper = shallow<Search>(<Search {...data} />);
 
                     fakeGet.mockClear();
@@ -476,7 +476,7 @@ describe('handleClickSearchButton', () => {
 
                     wrapper.instance().handleClickSearchButton();
 
-                    expect(fakeGet).toHaveBeenCalledWith('/api/v1/search?artist=bob ross');
+                    expect(fakeGet).toHaveBeenCalledWith('/api/v1/artists?search=bob ross');
                 });
             });
 

@@ -88,7 +88,7 @@ class Search extends React.Component<ISearchProps & RouteComponentProps, ISearch
                 isLoading: true
             });
 
-            axios.get(`/api/v1/search?artist=${this.state.artist}`)
+            axios.get(`/api/v1/artists?search=${this.state.artist}`)
                 .then((resp: AxiosResponse) => {
                     this.setState({
                         isLoading: false,
