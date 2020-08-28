@@ -27,7 +27,7 @@ router.get('/artists', function(req: Request, res: Response, next: NextFunction)
         throw err;
     }
 
-    handleSearch(req.query.artist as string, req.session!.accessToken).then((data) => {
+    handleSearch(req.query.search as string, req.session!.accessToken).then((data) => {
             res.json(data);
         })
         .catch((err: IExpressError) => {
