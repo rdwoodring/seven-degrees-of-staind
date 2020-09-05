@@ -11,93 +11,78 @@ import ISearchState from './ISearchState';
 
 import SearchPresentation from './SearchPresentation';
 import SearchLoadingPresentation from './SearchLoadingPresentation';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-class Search extends React.Component<ISearchProps & RouteComponentProps, ISearchState> {
-    constructor(props: ISearchProps & RouteComponentProps) {
-        super(props);
+const Search: React.FC<ISearchProps & RouteComponentProps> = (props) => {
+    const [artist, setArtist] = useState(extractSearchFromProps()),
+        [isLoading, setIsLoading] = useState(false),
+        [results, setResults] = useState([]);
 
-        const initialSearch = this.extractSearchFromProps();
+    useEffect(() => {
+        doSearch();
+    }, []);
 
-        this.handleChangeSearchField = this.handleChangeSearchField.bind(this);
-        this.handleKeyUpSearchField = this.handleKeyUpSearchField.bind(this);
-
-        this.state = {
-            artist: initialSearch,
-            isLoading: false,
-            results: []
-        };
+    function handleChangeSearchField(e: React.ChangeEvent<HTMLInputElement>) {
+        setArtist(e.target.value);
     }
 
-    componentDidMount() {
-        this.doSearch();
-    }
-
-    render() {
-        const searchPresentationProps = {
-            ...this.state,
-            search: this.state.artist,
-            handleChangeSearchField: this.handleChangeSearchField,
-            handleKeyUpSearchField: this.handleKeyUpSearchField,
-            handleClickSearchButton: this.handleClickSearchButton,
-        },
-        SelectedSearchPresentation = this.selectSearchPresentation();
-
-        return (
-            <SelectedSearchPresentation {...searchPresentationProps} />
-        );
-    }
-
-    handleChangeSearchField(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            artist: e.target.value
-        });
-    }
-
-    handleKeyUpSearchField(e: React.KeyboardEvent<HTMLInputElement>) {
+    function handleKeyUpSearchField(e: React.KeyboardEvent<HTMLInputElement>) {
         const enterKeyCode = 13;
         
         if (e.keyCode === enterKeyCode) {
-            this.handleClickSearchButton();
+            handleClickSearchButton();
         }
     }
 
-    handleClickSearchButton() {
-        this.doSearch();
+    function handleClickSearchButton() {
+        doSearch();
 
-        this.props.history.push(`/search?artist=${this.state.artist}`);
+        props.history.push(`/search?artist=${artist}`);
     }
 
-    private extractSearchFromProps(): string {
-        const queryObj = queryString.parseUrl(this.props.location.search),
+    function extractSearchFromProps(): string {
+        const queryObj = queryString.parseUrl(props.location.search),
             artist = queryObj.query.artist ? queryObj.query.artist.toString() : '';
 
         return artist;
     }
 
-    private selectSearchPresentation(): React.ElementType {
-        if (this.state.isLoading) {
+    function selectSearchPresentation(): React.ElementType {
+        if (isLoading) {
             return SearchLoadingPresentation;
         } else {
             return SearchPresentation;
         }
     }
 
-    private doSearch() {
-        if (this.state.artist) {
-            this.setState({
-                isLoading: true
-            });
+    function doSearch() {
+        if (artist) {
+            setIsLoading(true);
 
-            axios.get(`/api/v1/artists?search=${this.state.artist}`)
+            axios.get(`/api/v1/artists?search=${artist}`)
                 .then((resp: AxiosResponse) => {
-                    this.setState({
-                        isLoading: false,
-                        results: resp.data.artists.items
-                    });
+                    setIsLoading(false);
+                    setResults(resp.data.artists.items);
                 });
         }
     }
-}
+
+    const searchPresentationProps = {
+        artist,
+        isLoading,
+        results,
+        search: artist,
+        handleChangeSearchField,
+        handleKeyUpSearchField,
+        handleClickSearchButton,
+    },
+    SelectedSearchPresentation = selectSearchPresentation();
+
+    return (
+        <SelectedSearchPresentation {...searchPresentationProps} />
+    );
+};
 
 export default withRouter(Search);
-export {Search};
+export {Search}
