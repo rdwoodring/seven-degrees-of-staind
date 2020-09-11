@@ -10,17 +10,14 @@ import ISearchProps from './ISearchProps';
 
 import SearchPresentation from './SearchPresentation';
 import SearchLoadingPresentation from './SearchLoadingPresentation';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Search: React.FC<ISearchProps & RouteComponentProps> = (props) => {
     const [artist, setArtist] = useState(extractSearchFromProps()),
         [isLoading, setIsLoading] = useState(false),
         [results, setResults] = useState([]);
 
-    useEffect(() => {
-        doSearch();
-    }, []);
+    useEffect(doSearch, []);
 
     function handleChangeSearchField(e: React.ChangeEvent<HTMLInputElement>) {
         setArtist(e.target.value);
