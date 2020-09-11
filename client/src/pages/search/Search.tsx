@@ -7,7 +7,6 @@ import queryString from 'query-string';
 import axios, { AxiosResponse } from 'axios';
 
 import ISearchProps from './ISearchProps';
-import ISearchState from './ISearchState';
 
 import SearchPresentation from './SearchPresentation';
 import SearchLoadingPresentation from './SearchLoadingPresentation';
