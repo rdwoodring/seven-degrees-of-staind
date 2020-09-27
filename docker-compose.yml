@@ -1,0 +1,29 @@
+version: "2"
+services:
+    client:
+        build: ./
+        # restart: always
+        ports:
+            - "3000:3000"
+        working_dir: /usr/src/app
+        # entrypoint: ["node", "./bin/www"]
+        entrypoint: ["yarn", "start"]
+        networks:
+            - sdosnetwork
+        depends_on:
+            - mongodb
+    mongodb:
+        image: mongo
+        restart: always
+        container_name: mongodb
+        volumes:
+            - ./data-node:/data/db
+        ports:
+            - 27017:27017
+        # command: mongod --noauth
+        command: mongod
+        networks:
+            - sdosnetwork
+networks:
+    sdosnetwork:
+        driver: bridge
