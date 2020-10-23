@@ -1,6 +1,23 @@
+# configuration
 .git
 .gitignore
 .circleci
-.coverage
-README.md
+.npmrc
+
+# documentation
+*.md
+*.txt
+
+# test artifacts
+**/coverage
+**/*.spec.ts
+
+# packages
 node_modules/
+**/node_modules
+
+# build files
+**/dist
+
+# compose mongo data
+data-node

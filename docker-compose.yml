@@ -1,13 +1,14 @@
 version: "2"
 services:
-    client:
+    application:
         build: ./
         # restart: always
         ports:
             - "3000:3000"
         working_dir: /usr/src/app
         # entrypoint: ["node", "./bin/www"]
-        entrypoint: ["yarn", "start"]
+        # entrypoint: ["yarn", "start"]
+        # entrypoint: ["./start.sh"]
         networks:
             - sdosnetwork
         depends_on:
