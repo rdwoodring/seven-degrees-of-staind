@@ -21,7 +21,7 @@
         "dotenv": "4.0.0",
         "express": "4.16.4",
         "express-session": "1.16.2",
-        "lodash": "4.17.14",
+        "lodash": "4.17.21",
         "mongoose": "5.8.11",
         "morgan": "1.9.1",
         "p-queue": "6.0.2",
